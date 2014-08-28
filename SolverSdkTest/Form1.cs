@@ -23,8 +23,8 @@ namespace SolverSdkTest
         {
             try
             {
-                //var gen = new Cellenator();
-                //gen.GenJCells();
+                var gen = new Cellenator();
+                gen.GenJCells();
 
                 var sepsize = new SeparatorSizing();
 

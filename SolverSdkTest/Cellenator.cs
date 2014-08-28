@@ -27,11 +27,15 @@ namespace SolverSdkTest
             CCells = new StringBuilder();
 
             var jcell =
-            @"public double J{0}
+            @"private double? _j{0};
+            public double J{0}
             {{
                 get
                 {{
-                    return F{0}*(1-I{0});  
+                    //Debug.WriteLine(""J{0}"");
+                    if(_j{0} == null)
+                        _j{0} = F{0}*(1-I{0});  
+                    return _j{0}.Value;
                 }}
             }}";
             var j808cell =
@@ -39,33 +43,46 @@ namespace SolverSdkTest
             {{
                 get
                 {{
+                    //Debug.WriteLine(""J808"");
                     return {0};  
                 }}
             }}";
             var icell =
-            @"public double I{0}
+            @"private double? _i{0};
+            public double I{0}
             {{
                 get
                 {{
-                    return (B3 == Position.Vertical ? (A{0} < B576 ? 0 : 1) : Math.Min(1, Math.Pow((A{0} / 304800), 2) * (1488 * 32.2 * (E33 - E20)) / (18 * E39) / B571 * H8 / B588));  
+                    //Debug.WriteLine(""I{0}"");
+                    if(_i{0} == null)
+                        _i{0} = (B3 == Position.Vertical ? (A{0} < _b576.Value ? 0 : 1) : Math.Min(1, Math.Pow((A{0} / 304800), 2) * (1488 * 32.2 * (_e33.Value - _e20.Value)) / (18 * _e39.Value) / _b571.Value * H8 / _b588.Value)); 
+                    return _i{0}.Value;
                 }}
             }}";
             var fcell =
-            @"public double F{0}
+            @"private double? _f{0};
+            public double F{0}
             {{
                 get
                 {{
-                    return E{0} * B585;  
+                    //Debug.WriteLine(""F{0}"");
+                    if(_f{0} == null)
+                        _f{0} = E{0} * B585;
+                    return _f{0}.Value; 
                 }}
             }}"; 
             var a607cell =
             @"public double A607 { get; set; }";
             var acell =
-            @"public double A{0}
+            @"private double? _a{0};
+            public double A{0}
             {{
                 get
                 {{
-                    return (A807 - A607) / 200 + A{1}; 
+                    //Debug.WriteLine(""A{0}"");
+                    if(_a{0} == null)
+                        _a{0} = (A807 - A607) / 200 + A{1};
+                    return _a{0}.Value; 
                 }}
             }}"; 
             var a807cell =
@@ -73,36 +90,60 @@ namespace SolverSdkTest
             {
                 get
                 {
-                    return B593 - 1; 
+                    //Debug.WriteLine(""A807"");
+                    return _b593.Value - 1; 
                 }
             }";
             var e607cell =
             @"public double E607 { get; set; }";
             var ecell =
-            @"public double E{0}
+            @"private double? _e{0};
+            public double E{0}
             {{
                 get
                 {{
-                    return D{0} - D{1}; 
+                    //Debug.WriteLine(""E{0}"");
+                    if(_e{0} == null)
+                        _e{0} = D{0} - D{1};
+                    return _e{0}.Value; 
                 }}
             }}";
             var dcell =
-            @"public double D{0}
+            @"private double? _d{0};
+            public double D{0}
             {{
                 get
                 {{
-                    return 1 - 0.5 * (1 - MathHelpers.Erf(B597 * C{0}));
+                    //Debug.WriteLine(""D{0}"");
+                    if(_d{0} == null)
+                        _d{0} = 1 - 0.5 * (1 - MathHelpers.Erf(B597 * C{0}));
+                    return _d{0}.Value; 
                 }}
             }}";
             var ccell =
-            @"public double C{0}
+            @"private double? _c{0};
+            public double C{0}
             {{
                 get
                 {{
-                    return Math.Log(B596 * A{0} / (B593 - A{0})); //Natural Log base(e)
+                    //Debug.WriteLine(""C{0}"");
+                    if(_c{0} == null)
+                        _c{0} = Math.Log(_b596.Value * A{0} / (_b593.Value - A{0})); //Natural Log base(e)
+                    return _c{0}.Value; 
                 }}
             }}";
-            
+
+            var pProperties = @"
+            private double? _b576 { get; set; }
+            private double? _e33 { get; set; }
+            private double? _e20 { get; set; }
+            private double? _e39 { get; set; }
+            private double? _b571 { get; set; }
+            private double? _b588 { get; set; }
+            private double? _b593 { get; set; }
+            private double? _b596 { get; set; }
+            ";
+
             var j808 = new StringBuilder();
 
             for (int i = 607; i <= 807; i++)
@@ -132,6 +173,7 @@ namespace SolverSdkTest
                         
             var regionJ808 = new StringBuilder();
             regionJ808.AppendLine("#region J808");
+            regionJ808.AppendLine(pProperties);
             regionJ808.AppendLine(ACells.ToString());
             regionJ808.AppendLine(CCells.ToString());
             regionJ808.AppendLine(DCells.ToString());
