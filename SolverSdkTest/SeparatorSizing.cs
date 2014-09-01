@@ -3628,86 +3628,7 @@ namespace SolverSdkTest
             }
         }
 
-        public double B585
-        {
-            get
-            {
-                return 0.04 * (Math.Pow(B584, 0.28)) * Math.Pow((B581 / B580), 0.4);
-            }
-        }
-        public double B593
-        {
-            get
-            {
-                return 1000000 * (Math.Pow((B590 * 0.001 * E40 / 2), 0.6)) * (Math.Pow((E33 * 16), -0.2)) * (Math.Pow(B592, -0.4));
-            }
-        }
-        public double B597 { get; set; }
-        public double B596
-        {
-            get
-            {
-                return (B593 - B595) / B595;
-            }
-        }
-        public double B584
-        {
-            get
-            {
-                return Math.Pow((B582 / 3.2808), 2) / (9.81 * 0.3048 * B580);
-            }
-        }
-        public double B581
-        {
-            get
-            {
-                return B39 + (B877 - B880);
-            }
-        }
-        public double B590 { get; set; }
-        public double B592
-        {
-            get
-            {
-                return (E33 * 16) * B589 * (Math.Pow((0.3048 * B582), 3)) / (2 * 0.3048 * B591) * (1 - 2 * B589 - (Math.Pow(B589, 2)) * (Math.Pow(B585, 2) - 1));
-            }
-        }
-        public double B595
-        {
-            get
-            {
-                return B593 / B594;
-            }
-        }
-        public double B582
-        {
-            get
-            {
-                return Math.Pow((Math.Pow(B579, 2) + 2 * 32.17 * B581), 0.5);
-            }
-        }
-        public double B589
-        {
-            get
-            {
-                return (B3 == Position.Vertical ? Math.Pow(B583, 2) / Math.Pow(H7, 2) : Math.Pow(B583, 2) / Math.Pow((2 * Math.Pow((H7 * B880 - (Math.Pow(B880, 2))), 0.5)), 2));
-            }
-        }
-        public double B591
-        {
-            get
-            {
-                return 0.25 * B588 + 0.1;
-            }
-        }
-        public double B594 { get; set; }
-        public double B583
-        {
-            get
-            {
-                return Math.Pow((B578 / B582 / 0.7854), 0.5);
-            }
-        }
+        #region Amir
 
         public double B23 { get; set; }
         public double B26 { get; set; }
@@ -3865,5 +3786,10 @@ namespace SolverSdkTest
 
         public double B203 { get { return B202 * 0.3048 * 1000000; } }
         public double B206 { get { return (E39 / E25) * Math.Pow((E20 / E33), 0.5); } }
+
+        #endregion
+
+        public double H235 { get; set; }
+        private double? _h235 { get; set; }
     }
 }
