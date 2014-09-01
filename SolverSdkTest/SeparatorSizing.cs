@@ -13,7 +13,7 @@ namespace SolverSdkTest
         public enum Position { N_A=0, Vertical = 1, Horizontal = 2 }
         public enum GeneralClassification { None = 0, Mesh = 1, Vane, Cyclone }
         public enum BooleanResponse { N_A = 0, N = 1, Y }
-        public enum SettlingLaw { OiutOfRange=0, Stokes=1, Intermediate, Newtons}
+        public enum SettlingLaw { OutOfRange=0, Stokes=1, Intermediate, Newtons}
 
         public double H21
         {
@@ -2853,7 +2853,7 @@ namespace SolverSdkTest
         {
             get
             {
-                return (B574 < B897 ? SettlingLaw.Stokes : (B574 < B898 ? SettlingLaw.Intermediate : (B574 < B899 ? SettlingLaw.Newtons : SettlingLaw.OiutOfRange)));
+                return (B574 < B897 ? SettlingLaw.Stokes : (B574 < B898 ? SettlingLaw.Intermediate : (B574 < B899 ? SettlingLaw.Newtons : SettlingLaw.OutOfRange)));
             }
         }
         public double B573
@@ -19027,5 +19027,162 @@ namespace SolverSdkTest
                 return Math.Pow((B578 / B582 / 0.7854), 0.5);
             }
         }
+
+        public double B23 { get; set; }
+        public double B26 { get; set; }
+        public double B30 { get; set; }
+        public double B31 { get; set; }
+        public double B59 { get; set; }
+        public double B60 { get; set; }
+        public double B61 { get; set; }
+        public double B71 { get; set; }
+        public double B72 { get; set; }
+
+        public double D113 { get; set; }
+        public double D114 { get; set; }
+        public double D115 { get; set; }
+
+        public double B75 { get { return B174; } }
+        public double B76 { get { return B837; } }
+        public double B88 { get { return B525; } }
+        public double B91 { get { return C525; } }
+
+        public double H14 { get { return H7; } }
+        public double H24 { get { return B59 * B57 * (3.1416 * H16 * H17 * H19 / 12 + 2 * B58 * B60 * H20 / 12 * Math.Pow(H16, 2)) + B61 * (B456 + B473 + B569 + B541 + C541) + B59 * (B194 + E182 + H180); } }
+        public double H36 { get { return C88 - B88; } }
+        public double H40 { get { return C71 - B71; } }
+        public double H41 { get { return B3 == Position.Horizontal ? C72 - B72 : -99; } }
+        public double H51 { get { return B181; } }
+        public double H52 { get { return E175; } }
+        public double H53 { get { return H174; } }
+        public double H62 { get { return B880; } }
+
+        public double C71 { get { return B572; } }
+        public double C72 { get { return B3 == Position.Horizontal ? B571 : 0; } } //"N/A"
+        public double C73 { get { return B190; } }
+        public double C74 { get { return B176; } }
+        public double C75 { get { return B186; } }
+        public double C76 { get { return B837; } }
+        public double C77 { get { return B211; } }
+        public double C78 { get { return B214; } }
+        public double C79 { get { return B454; } }
+        public double C80 { get { return J441; } }
+        public double C82 { get { return B474; } }
+        public double C83 { get { return B476; } }
+        public double C84 { get { return B481; } }
+        public double C85 { get { return L441; } }
+        public double C86 { get { return M441; } }
+        public double C87 { get { return B533; } }
+        public double C88 { get { return B537; } }
+        public double C89 { get { return T442; } }
+        public double C90 { get { return T441; } }
+        public double C91 { get { return C537; } }
+        public double C92 { get { return Z231 == GeneralClassification.None ? 0 : Z442; } }
+
+        public double B176 { get { return 0; } } //HLookUp "Inlet flow pattern"!D43
+        public double B186 { get { return B169 * Math.Pow(B185, 2); } }
+        public double B211 { get { return B210 * B209 / (1 + B210); } }
+        public double B214 { get { return B213 * 42; } }
+        public double B454 { 
+            get 
+            {
+ 
+                return Math.Min(1, 
+                (A108 == 1 ? (B453 > 800 ? 0.1 : (1 - 0.0012323 * B453) / (1 - 0.00109 * B453 + 0.00000022685 * Math.Pow(B453, 2)))
+                : (A108 == 2 ? (B453 > 1100 ? 0.1 : (1 - 0.0008757 * B453) / (1 - 0.0007705 * B453 + 0.0000000703 * Math.Pow(B453, 2)))
+                : (A108 == 3 ? (B453 > 1800 ? 0.1 : (1 - 0.0005276 * B453) / (1 - 0.00045404 * B453 - 0.00000002055 * Math.Pow(B453, 2)))
+                : (A108 == 4 ? (B453 > 9000 ? 0.1 : (1 - 0.00010422 * B453) / (1 - 0.00010216 * B453 + 0.0000000013243 * Math.Pow(B453, 2)))
+                : (B453 > 15000 ? 0.1 : (0.9841 - 0.000064214 * B453) / (1 - 0.000065651 * B453 + 0.0000000004124 * Math.Pow(B453, 2))))))));
+            }   
+        }
+        public double B476 { get { return Math.Pow(B475 / ((E33 - E20) / E20), 0.5); } }
+        public double B481 { 
+            get  //Replaced 476 TO 480 Due missing text in excel.
+            { 
+                return B3 == Position.Vertical ? 
+                    (B480 == SettlingLaw.Stokes ? 304800 * Math.Pow((B475 * 18 * E25 / (1488 * 32.2 * (E33 - E20))), 0.5) 
+                    : (B480 == SettlingLaw.Intermediate ? 304800 * Math.Pow((B475 * Math.Pow(E20, 0.29) * Math.Pow(E25, 0.43) / (3.54 * Math.Pow(32.2, 0.71) * Math.Pow((E33 - E20), 0.71))), (1 / 1.14))
+                    : 304800 * (Math.Pow((B475 / 1.74), 2)) * E20 / (32.2 * (E33 - E20)))) 
+                    : (B480 == SettlingLaw.Stokes ? 304800 * Math.Pow((B478 * 18 * E25 / (1488 * 32.2 * (E33 - E20))), 0.5) 
+                    : (B480 == SettlingLaw.Intermediate ? 304800 * Math.Pow((B478 * Math.Pow(E20, 0.29) * Math.Pow(E25, 0.43) / (3.54 * Math.Pow(32.2, 0.71) * Math.Pow((E33 - E20), 0.71))), (1 / 1.14))
+                    : 304800 * (Math.Pow((B478 / 1.74), 2)) * E20 / (32.2 * (E33 - E20)))); 
+            } 
+        }
+        public double B533 { get { return B514 == GeneralClassification.None ? 0 : B532 * E9 / 1440 / B529; } } //N/A
+        public double B537 { get { return B514 == GeneralClassification.None ? 0 : B531 / Math.Pow(((E33 - E20) / E20), 0.5); } } //N/A
+        public double C537 { get { return C514 == GeneralClassification.None ? 0 : C531 / Math.Pow(((E33 - E20) / E20), 0.5); } } //N/A
+        public double J441
+        {
+            get
+            {
+                //Debug.WriteLine("J441");
+                //return J240 + J241 + J242 + J243 + J244 + J245 + J246 + J247 + J248 + J249 + J250 + J251 + J252 + J253 + J254 + J255 + J256 + J257 + J258 + J259 + J260 + J261 + J262 + J263 + J264 + J265 + J266 + J267 + J268 + J269 + J270 + J271 + J272 + J273 + J274 + J275 + J276 + J277 + J278 + J279 + J280 + J281 + J282 + J283 + J284 + J285 + J286 + J287 + J288 + J289 + J290 + J291 + J292 + J293 + J294 + J295 + J296 + J297 + J298 + J299 + J300 + J301 + J302 + J303 + J304 + J305 + J306 + J307 + J308 + J309 + J310 + J311 + J312 + J313 + J314 + J315 + J316 + J317 + J318 + J319 + J320 + J321 + J322 + J323 + J324 + J325 + J326 + J327 + J328 + J329 + J330 + J331 + J332 + J333 + J334 + J335 + J336 + J337 + J338 + J339 + J340 + J341 + J342 + J343 + J344 + J345 + J346 + J347 + J348 + J349 + J350 + J351 + J352 + J353 + J354 + J355 + J356 + J357 + J358 + J359 + J360 + J361 + J362 + J363 + J364 + J365 + J366 + J367 + J368 + J369 + J370 + J371 + J372 + J373 + J374 + J375 + J376 + J377 + J378 + J379 + J380 + J381 + J382 + J383 + J384 + J385 + J386 + J387 + J388 + J389 + J390 + J391 + J392 + J393 + J394 + J395 + J396 + J397 + J398 + J399 + J400 + J401 + J402 + J403 + J404 + J405 + J406 + J407 + J408 + J409 + J410 + J411 + J412 + J413 + J414 + J415 + J416 + J417 + J418 + J419 + J420 + J421 + J422 + J423 + J424 + J425 + J426 + J427 + J428 + J429 + J430 + J431 + J432 + J433 + J434 + J435 + J436 + J437 + J438 + J439 + J440;
+                return 0;
+            }
+        }
+        public double M441
+        {
+            get
+            {
+                //Debug.WriteLine("M441");
+                //return M240 + M241 + M242 + M243 + M244 + M245 + M246 + M247 + M248 + M249 + M250 + M251 + M252 + M253 + M254 + M255 + M256 + M257 + M258 + M259 + M260 + M261 + M262 + M263 + M264 + M265 + M266 + M267 + M268 + M269 + M270 + M271 + M272 + M273 + M274 + M275 + M276 + M277 + M278 + M279 + M280 + M281 + M282 + M283 + M284 + M285 + M286 + M287 + M288 + M289 + M290 + M291 + M292 + M293 + M294 + M295 + M296 + M297 + M298 + M299 + M300 + M301 + M302 + M303 + M304 + M305 + M306 + M307 + M308 + M309 + M310 + M311 + M312 + M313 + M314 + M315 + M316 + M317 + M318 + M319 + M320 + M321 + M322 + M323 + M324 + M325 + M326 + M327 + M328 + M329 + M330 + M331 + M332 + M333 + M334 + M335 + M336 + M337 + M338 + M339 + M340 + M341 + M342 + M343 + M344 + M345 + M346 + M347 + M348 + M349 + M350 + M351 + M352 + M353 + M354 + M355 + M356 + M357 + M358 + M359 + M360 + M361 + M362 + M363 + M364 + M365 + M366 + M367 + M368 + M369 + M370 + M371 + M372 + M373 + M374 + M375 + M376 + M377 + M378 + M379 + M380 + M381 + M382 + M383 + M384 + M385 + M386 + M387 + M388 + M389 + M390 + M391 + M392 + M393 + M394 + M395 + M396 + M397 + M398 + M399 + M400 + M401 + M402 + M403 + M404 + M405 + M406 + M407 + M408 + M409 + M410 + M411 + M412 + M413 + M414 + M415 + M416 + M417 + M418 + M419 + M420 + M421 + M422 + M423 + M424 + M425 + M426 + M427 + M428 + M429 + M430 + M431 + M432 + M433 + M434 + M435 + M436 + M437 + M438 + M439 + M440;
+                return 0;
+            }
+        }
+        public double T441
+        {
+            get
+            {
+                //Debug.WriteLine("T441");
+                //return T240 + T241 + T242 + T243 + T244 + T245 + T246 + T247 + T248 + T249 + T250 + T251 + T252 + T253 + T254 + T255 + T256 + T257 + T258 + T259 + T260 + T261 + T262 + T263 + T264 + T265 + T266 + T267 + T268 + T269 + T270 + T271 + T272 + T273 + T274 + T275 + T276 + T277 + T278 + T279 + T280 + T281 + T282 + T283 + T284 + T285 + T286 + T287 + T288 + T289 + T290 + T291 + T292 + T293 + T294 + T295 + T296 + T297 + T298 + T299 + T300 + T301 + T302 + T303 + T304 + T305 + T306 + T307 + T308 + T309 + T310 + T311 + T312 + T313 + T314 + T315 + T316 + T317 + T318 + T319 + T320 + T321 + T322 + T323 + T324 + T325 + T326 + T327 + T328 + T329 + T330 + T331 + T332 + T333 + T334 + T335 + T336 + T337 + T338 + T339 + T340 + T341 + T342 + T343 + T344 + T345 + T346 + T347 + T348 + T349 + T350 + T351 + T352 + T353 + T354 + T355 + T356 + T357 + T358 + T359 + T360 + T361 + T362 + T363 + T364 + T365 + T366 + T367 + T368 + T369 + T370 + T371 + T372 + T373 + T374 + T375 + T376 + T377 + T378 + T379 + T380 + T381 + T382 + T383 + T384 + T385 + T386 + T387 + T388 + T389 + T390 + T391 + T392 + T393 + T394 + T395 + T396 + T397 + T398 + T399 + T400 + T401 + T402 + T403 + T404 + T405 + T406 + T407 + T408 + T409 + T410 + T411 + T412 + T413 + T414 + T415 + T416 + T417 + T418 + T419 + T420 + T421 + T422 + T423 + T424 + T425 + T426 + T427 + T428 + T429 + T430 + T431 + T432 + T433 + T434 + T435 + T436 + T437 + T438 + T439 + T440;
+                return 0;
+            }
+        }
+        public double L441 { get { return (J441 - M441) / J441; } }
+        public double T442 { get { return M441 == 0 ? 0 : (M441 - T441) / M441; } }
+        public GeneralClassification Z231 { get { return C514; } }
+        public double Z442 { get { return T441 == 0 ? 0 : (T441 - Z441) / T441; } }
+
+        public double E9 { get { return (B13*1000000-B12*E29)*0.000001; } }
+        public double E25 { get { return E22 * Math.Exp(E23 * Math.Pow((E20 / 62.43), E24)); } }
+        public double B185 { get { return B168 / (0.7854 * Math.Pow((B184 / 12), 2)); } }
+        public double B210 { get { return 0.00000009 * ((B184 / 12 * Math.Pow(B188, 3) * Math.Pow((E33 * E20), 0.5)) / E41) * Math.Pow((Math.Pow(E20, (1 - B205)) * Math.Pow((E25 / 1488), B205) / (Math.Pow(B202, (1 + B205)) * 32.17 * E33)), (1 / (2 - B205))); } }
+        public double B209 { get { return 1 - B208 / (E32 * E33); } }
+        public double B213 { get { return B212 * 86400 / 5.615 / B13; } }
+        public double B453 { get { return B186; } }
+        public double B478 { get { return B482 / B477; } }
+        public SettlingLaw B480 { get { return B479 < B891 ? SettlingLaw.Stokes : (B479 < B892 ? SettlingLaw.Intermediate: (B479 < B893 ? SettlingLaw.Newtons : SettlingLaw.OutOfRange)); } }
+        public double B531 { get { return B530; } }
+        public double B532 { get { return B514 == GeneralClassification.None ? 0 : M441; } } //N/A
+        public double C531 { get { return C530; } }
+
+        public double C530 { get { return C514 == GeneralClassification.None ? 0 : B460 * B523 / C529; } } //N/A
+        public double B202 { get { return Math.Pow(((0.0091 * (0.001 * E40 * 2.2) * B184 / 12) / (E20 * (Math.Pow(B188, 2)))), 0.5); } }
+        public double B205 { get { return B204 == SettlingLaw.Stokes ? 1 : (B204 == SettlingLaw.Intermediate ? 0.6 : (B204 == SettlingLaw.Newtons ? 0 : -1 )); } } /*"Out of Range"*/
+        public double B208 { get { return 0.25 * (E39 / 1488) * 3.1416 * B184 / 12 * B207; } }
+        public double B212 { get { return B211 * E32; } }
+        public double B477 { get { return H8 / B475; } }
+        public double B479 { 
+            get 
+            { 
+                return B3 == Position.Vertical ? 
+                    304800 * Math.Pow((B475 * (Math.Pow(E20, 0.29)) * (Math.Pow(E25, 0.43)) / (3.54 * (Math.Pow(32.2, 0.71)) * Math.Pow((E33 - E20), 0.71))), (1 / 1.14))
+                    : 304800 * Math.Pow((B478 * (Math.Pow(E20, 0.29)) * (Math.Pow(E25, 0.43)) / (3.54 * (Math.Pow(32.2, 0.71)) * Math.Pow((E33 - E20), 0.71))), (1 / 1.14)); 
+            } 
+        }
+        public double B482 { get { return H7 - B877; } }
+        public double B530 { get { return B514 == GeneralClassification.None ? 0 : (C514 == GeneralClassification.None ? B460 * B523 / B529 : C530); } } //N/A
+        public double B891 { get { return 0.025 * 304800 * Math.Pow((Math.Pow(E25, 2) / (32.2 * E20 * (E33 - E20))), 0.333); } }
+        public double B892 { get { return 0.334 * 304800 * Math.Pow((Math.Pow(E25, 2) / (32.2 * E20 * (E33 - E20))), 0.333); } }
+        public double B893 { get { return 18.13 * 304800 * Math.Pow((Math.Pow(E25, 2) / (32.2 * E20 * (E33 - E20))), 0.333); } }
+        public double E22 { get { return 0.0001 * (((7.77 + 0.0063 * E10) * Math.Pow((B16 + 460), 1.5)) / (122.4 + 12.9 * E10 + (B16 + 460))); } }
+        public double E23 { get { return (2.57 + 1914.5 / (B16 + 460) + 0.0095 * E10); } }
+        public double E24 { get { return 1.1 + 0.04 * E23; } }
+
+        public SettlingLaw B204 { get { return B203 < B891 ? SettlingLaw.Stokes : (B203 < B892 ? SettlingLaw.Intermediate : (B203 < B893 ? SettlingLaw.Newtons : SettlingLaw.OutOfRange)); } }
+        public double B207 { get { return 7.3 * Math.Pow((Math.Log10(B206)), 3) + 44.2 * Math.Pow((Math.Log10(B206)), 2) - 263 * Math.Log10(B206) + 439; } }
+
+        public double B203 { get { return B202 * 0.3048 * 1000000; } }
+        public double B206 { get { return (E39 / E25) * Math.Pow((E20 / E33), 0.5); } }
     }
 }

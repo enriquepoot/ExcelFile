@@ -15,6 +15,7 @@ namespace SolverSdkTest
         public StringBuilder FCells { get; set; }
         public StringBuilder ICells { get; set; }
         public StringBuilder JCells { get; set; }
+        public StringBuilder ZCells { get; set; }
 
         public void GenJCells()
         {
@@ -25,6 +26,7 @@ namespace SolverSdkTest
             ECells = new StringBuilder();
             DCells = new StringBuilder();
             CCells = new StringBuilder();
+            ZCells = new StringBuilder();
 
             var jcell =
             @"private double? _j{0};
@@ -169,6 +171,25 @@ namespace SolverSdkTest
                 CCells.AppendLine(string.Format(ccell, i));
             }
 
+            var j441 = new StringBuilder();
+            var m441 = new StringBuilder();
+            var t441 = new StringBuilder();
+            for (int i = 240; i <= 440; i++)
+            {
+                if (i == 440)
+                {
+                    j441.AppendFormat("J{0}", i);
+                    m441.AppendFormat("M{0}", i);
+                    t441.AppendFormat("T{0}", i);
+                }
+                else
+                {
+                    j441.AppendFormat("J{0} + ", i);
+                    m441.AppendFormat("M{0} +", i);
+                    t441.AppendFormat("T{0} +", i);
+                }
+            }
+
             JCells.AppendLine(string.Format(j808cell, j808.ToString()));
                         
             var regionJ808 = new StringBuilder();
@@ -183,6 +204,41 @@ namespace SolverSdkTest
             regionJ808.AppendLine(JCells.ToString());
             regionJ808.AppendLine("#endregion J808");
 
+
+            var j441cell =
+            @"public double J441
+            {{
+                get
+                {{
+                    //Debug.WriteLine(""J441"");
+                    return {0};  
+                }}
+            }}";
+            var m441cell =
+            @"public double M441
+            {{
+                get
+                {{
+                    //Debug.WriteLine(""M441"");
+                    return {0};  
+                }}
+            }}";
+            var t441cell =
+            @"public double T441
+            {{
+                get
+                {{
+                    //Debug.WriteLine(""T441"");
+                    return {0};  
+                }}
+            }}";
+
+            ZCells.AppendLine(string.Format(j441cell, j441.ToString()));
+            ZCells.AppendLine(string.Format(m441cell, m441.ToString()));
+            ZCells.AppendLine(string.Format(t441cell, t441.ToString()));
+            regionJ808.AppendLine("#region Z441");
+            regionJ808.AppendLine(ZCells.ToString());
+            regionJ808.AppendLine("#endregion Z441");
             var finalVars = regionJ808.ToString();
 
         }
