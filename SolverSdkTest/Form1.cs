@@ -23,8 +23,8 @@ namespace SolverSdkTest
         {
             try
             {
-                var gen = new Cellenator();
-                gen.GenJCells();
+                //var gen = new Cellenator();
+                //gen.GenJCells();
 
                 var sepsize = new SeparatorSizing();
 
@@ -32,7 +32,8 @@ namespace SolverSdkTest
                 sepsize.H8 = 2.83267005098296;
 
                 var val = sepsize.H21;
-
+                var h24 = sepsize.H24;
+                var B533 = sepsize.B533;
                 var s = sepsize.J808;
 
                 var r = 9;
