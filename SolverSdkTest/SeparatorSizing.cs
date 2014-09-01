@@ -3675,7 +3675,7 @@ namespace SolverSdkTest
         public double C71 { get { return B572; } }
         public double C72 { get { return B3 == Position.Horizontal ? B571 : Double.NaN; } } //"N/A"
         public double C73 { get { return B190; } }
-        public double C74 { get { return B176; } }
+        public FlowPattern C74 { get { return B176; } }
         public double C75 { get { return B186; } }
         public double C76 { get { return B837; } }
         public double C77 { get { return B211; } }
