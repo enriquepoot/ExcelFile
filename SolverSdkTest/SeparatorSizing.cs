@@ -3134,6 +3134,7 @@ namespace SolverSdkTest
 
         public double GetJ808Value()
         {
+            #region Set Variables
             _b576 = B576;
             _e33 = E33;
             _e20 = E20;
@@ -3143,6 +3144,7 @@ namespace SolverSdkTest
             _b593 = B593;
             _b596 = B596;
             _b585 = B585;
+            #endregion
 
             var firstA = 1.0;
             var lastA = _b593.Value-1;
@@ -3207,22 +3209,407 @@ namespace SolverSdkTest
         #endregion
 
         #region Z441
+        
+        private double? _h235 { get; set; }
+        private double? _h237 { get; set; }
+        private double? _h236 { get; set; }
+        private double? _b216 { get; set; }
+        private double? _b454 { get; set; }
+        private double? _b481 { get; set; }
+        private double? _b891 { get; set; }
+        private double? _e25 { get; set; }
+        private double? _b475 { get; set; }
+        private double? _b482 { get; set; }
+        private double? _b892 { get; set; }
+        private double? _g131 { get; set; }
+        private double? _f131 { get; set; }
+        private double? _f143 { get; set; }
+        private double? _e143 { get; set; }
+        private double? _d143 { get; set; }
+        private double? _h131 { get; set; }
+        private double? _b536 { get; set; }
+        private double? _d155 { get; set; }
+        private double? _i155 { get; set; }
+        private double? _h155 { get; set; }
+        private double? _b531 { get; set; }
+        private double? _r235 { get; set; }
+        private double? _q446 { get; set; }
+        private double? _r237 { get; set; }
+        private double? _r236 { get; set; }
+
+        public double H235
+        {
+            get
+            {
+                return H233 * H234;
+            }
+        }
+        public double H237
+        {
+            get
+            {
+                return B222;
+            }
+        }
+        public double H236
+        {
+            get
+            {
+                return (H235 - H233) / H233;
+            }
+        }
+        public double B216
+        {
+            get
+            {
+                return E32 * 7.48 * 86400 / B13;
+            }
+        }
+        public GeneralClassification Q231
+        {
+            get
+            {
+                return B514;
+            }
+        }
+        public double G131
+        {
+            get
+            {
+                return VLOOKUP(A131, GetLookupTable(4), G119, false);
+            }
+        }
+        public double F131
+        {
+            get
+            {
+                return VLOOKUP(A131, GetLookupTable(4), F119, false);
+            }
+        }
+        public double F143
+        {
+            get
+            {
+                return VLOOKUP(A143, GetLookupTable(5), F119, false);
+            }
+        }
+        public double E143
+        {
+            get
+            {
+                return VLOOKUP(A143, GetLookupTable(5), E119, false);
+            }
+        }
+        public double D143
+        {
+            get
+            {
+                return VLOOKUP(A143, GetLookupTable(5), D119, false);
+            }
+        }
+        public double B536
+        {
+            get
+            {
+                return (B514 == GeneralClassification.Cyclone ? B531 / G155 : Double.NaN);
+            }
+        }
+        public double D155
+        {
+            get
+            {
+                return VLOOKUP(A155, GetLookupTable(6), D119, false);
+            }
+        }
+        public double I155
+        {
+            get
+            {
+                return VLOOKUP(A155, GetLookupTable(6), I119, false);
+            }
+        }
+        public double R235
+        {
+            get
+            {
+                return R233 * R234;
+            }
+        }
+        public double Q446
+        {
+            get
+            {
+                return B538;
+            }
+        }
+        public double R237
+        {
+            get
+            {
+                return B222;
+            }
+        }
+        public double R236
+        {
+            get
+            {
+                return (R235 - R233) / R233;
+            }
+        }
+        public double H233
+        {
+            get
+            {
+                return H232 * B218;
+            }
+        }
+        public double H234
+        {
+            get
+            {
+                return B219;
+            }
+        }
+        public double B222 { get; set; }
+        public double G155
+        {
+            get
+            {
+                return VLOOKUP(A155, GetLookupTable(6), G119, false);
+            }
+        }
+        public double R233
+        {
+            get
+            {
+                return R232 * H233;
+            }
+        }
+        public double R234
+        {
+            get
+            {
+                return B219;
+            }
+        }
+        public double B538
+        {
+            get
+            {
+                return (B514 == GeneralClassification.None ? Double.NaN : (B537 / B535 <= 1.03 ? 1 : B537 / B535));
+            }
+        }
+        public double H232
+        {
+            get
+            {
+                return B455;
+            }
+        }
+        public double B218
+        {
+            get
+            {
+                return 304800 * 0.01 * (E41 / (E20 * Math.Pow(B188, 2))) * (Math.Pow(((B184 / 12) * B188 * E20 / (E25 / 1488)), 0.6667)) * (Math.Pow((E20 / E33), -0.333)) * Math.Pow((E25 / E39), 0.6667);
+            }
+        }
+        public double B219 { get; set; }
+        public double R232
+        {
+            get
+            {
+                return ((Q446 <= 1 || Q446 == Double.NaN) ? 1 : S232);
+            }
+        }
+        public double B535
+        {
+            get
+            {
+                return (B514 == GeneralClassification.None ? Double.NaN : B525 * B534);
+            }
+        }
+        public double B455
+        {
+            get
+            {
+                return Math.Max(B454, 0.3);
+            }
+        }
+        public double S232 { get; set; }
+        public double B534
+        {
+            get
+            {
+                return (B514 == GeneralClassification.None ? Double.NaN : Math.Min(1, (B514 == GeneralClassification.Mesh ? 1 - K131 * (B533 - J131) : (B514 == GeneralClassification.Vane ? 1 - J143 * (B533 - I143) : (B514 == GeneralClassification.Cyclone ? 1 - M155 * (B533 - K155) : Double.NaN)))));
+            }
+        }
+        public double K131
+        {
+            get
+            {
+                return VLOOKUP(A131, GetLookupTable(4), K119, false);
+            }
+        }
+        public double J131
+        {
+            get
+            {
+                return VLOOKUP(A131, GetLookupTable(4), J119, false);
+            }
+        }
+        public double J143
+        {
+            get
+            {
+                return VLOOKUP(A143, GetLookupTable(5), J119, false);
+            }
+        }
+        public double I143
+        {
+            get
+            {
+                return VLOOKUP(A143, GetLookupTable(5), I119, false);
+            }
+        }
+        public double M155
+        {
+            get
+            {
+                return VLOOKUP(A155, GetLookupTable(6), M119, false);
+            }
+        }
+        public double K155
+        {
+            get
+            {
+                return VLOOKUP(A155, GetLookupTable(6), K119, false);
+            }
+        }
 
         public double GetZ441Value()
         {
+            #region Set Variables
+            _h235 = H235;
+            _h237 = H237;
+            _h236 = H236;
+            _b216 = B216;
+            _b454 = B454;
+            _b481 = B481;
+            _b891 = B891;
+            _e25 = E25;
+            _b475 = B475;
+            _b482 = B482;
+            _b892 = B892;
+            _g131 = G131;
+            _f131 = F131;
+            _f143 = F143;
+            _e143 = E143;
+            _d143 = D143;
+            _h131 = H131;
+            _b536 = B536;
+            _d155 = D155;
+            _i155 = I155;
+            _h155 = H155;
+            _b531 = B531;
+            _r235 = R235;
+            _q446 = Q446;
+            _r237 = R237;
+            _r236 = R236;
+            _e33 = E33;
+            _e20 = E20;
+            #endregion
+
             var firstH = 1.0;
             var lastH = _h235.Value - 1;
             var previousH = 0.0;
             var currentH = 0.0;
 
+            var firstI = 0.0;
+            var currentI = 0.0;
+            var i441 = 0.0;
+
+            var currentJ = 0.0;
+            var j441 = 0.0;
+
+            var currentL = 0.0;
+
+            var currentM = 0.0;
+            var m441 = 0.0;
+
+            var currentP = 0.0;
+
+            var currentQ = 0.0;
+            var q441 = 0.0;
+
+            var firstR = 1;
+            var lastR = _r235.Value - 1;
+            var previousR = 0.0;
+            var currentR = 0.0;
+
+            var firstS = 0.0;
+            var previousS = 0.0;
+            var currentS = 0.0;
+
+            #region H to R
             for (int i = 240; i <= 440; i++)
             {
+                previousH = currentH;
+                previousR = currentR;
+
                 if (i == 240)
                     currentH = firstH;
                 else if (i == 440)
                     currentH = lastH;
                 else
                     currentH = (lastH - firstH) / 200 + previousH;
+
+                if (i == 240)
+                    currentI = firstI;
+                else
+                    currentI = (1 - 0.5 * (1 - MathHelpers.Erf(_h237.Value * Math.Log(_h236.Value * currentH / (_h235.Value - currentH))))) - (1 - 0.5 * (1 - MathHelpers.Erf(H237 * Math.Log(_h236.Value * previousH / (_h235.Value - previousH)))));
+                i441 += currentI;
+
+                currentJ = (1 - _b454.Value) * _b216.Value * currentI;
+                j441 += currentJ;
+
+                currentL = (B3 == Position.Vertical ?
+                        (currentH < _b481.Value ? 0 : 1) :
+                        Math.Min(1, (currentH < _b891.Value ?
+                            Math.Pow((currentH / 304800), 2) * (1488 * 32.2 * (_e33.Value - _e20.Value)) / (18 * _e25.Value) / _b475.Value * H8 / _b482.Value :
+                            (currentH < _b892.Value ?
+                                (Math.Pow((currentH / 304800), 1.14)) * 3.54 * (Math.Pow(32.2, 0.71)) * (Math.Pow((_e33.Value - _e20.Value), 0.71)) / ((Math.Pow(_e20.Value, 0.29)) * (Math.Pow(_e25.Value, 0.43))) / _b475.Value * H8 / _b482.Value :
+                                1.74 * Math.Pow((32.2 * (_e33.Value - _e20.Value) * (currentH / 304800) / _e20.Value), 0.5) / _b475.Value * H8 / _b482.Value))));
+
+                currentM = currentJ * (1 - currentL);
+                m441 += currentM;
+
+                currentP = (Q231 == GeneralClassification.None
+                    ? 0
+                    : (Q231 == GeneralClassification.Mesh
+                        ? 1 - Math.Exp(-0.238 * _g131.Value * _h131.Value * Math.Max((-0.1677 * 0.6261 + 0.9949 * (Math.Pow(((_e33.Value - _e20.Value) * _b531.Value * (Math.Pow((currentH * 0.000001 * 3.2808), 2)) / (18 * _e25.Value / 1488 * (_f131.Value / 12))), 1.00493))) / (0.6261 + (Math.Pow(((_e33.Value - _e20.Value) * _b531.Value * (Math.Pow((currentH * 0.000001 * 3.2808), 2)) / (18 * _e25.Value / 1488 * (_f131.Value / 12))), 1.00493))), 0))
+                        : (Q231 == GeneralClassification.Vane
+                            ? 1 - Math.Exp(-(_e33.Value - _e20.Value) * Math.Pow((currentH * 0.000001 * 3.2808), 2) * _b531.Value * _f143.Value * _e143.Value / (515.7 * (_e25.Value / 1488) * _d143.Value / 12 * Math.Pow((Math.Cos(_e143.Value)), 2)))
+                            : 1 - Math.Exp(-8 * (_e33.Value - _e20.Value) * Math.Pow((currentH * 0.000001 * 3.2808), 2) * _b536.Value / (18 * _e25.Value / 1488 * _d155.Value / 12) * _h155.Value / 12 / (_d155.Value / 12 * Math.Pow((Math.Tan(_i155.Value / 57.3)), 2))))));
+
+                currentQ = (currentP > 0.999 ? 0 : currentM * (1 - currentP));
+                q441 += currentQ;
+
+                if (i == 240)
+                    currentR = firstR;
+                else if (i == 440)
+                    currentR = lastR;
+                else
+                    currentR = (lastR - firstR) / 200 + previousR;
+            }
+            #endregion
+
+            for (int i = 240; i <= 440; i++)
+            {
+                if (i == 240)
+                    currentS = firstS;
+                else
+                    currentS = ((_q446.Value <= 1 || _q446.Value == Double.NaN) ? (q441 == 0 ? 0 : currentQ / q441) : (1 - 0.5 * (1 - MathHelpers.Erf(_r237.Value * Math.Log(_r236.Value * currentR / (_r235.Value - currentR))))) - (1 - 0.5 * (1 - MathHelpers.Erf(_r237.Value * Math.Log(_r236.Value * previousR / (_r235.Value - previousR))))));
+
             }
 
             return 0;
@@ -3603,6 +3990,11 @@ namespace SolverSdkTest
             B597 = 0.72;
             B590 = 1;
             B594 = 5;
+            B222 = 0.72;
+            B219 = 5;
+            S232 = 2;
+
+            GetZ441Value();
         }
 
         public double Solve()
@@ -3788,8 +4180,5 @@ namespace SolverSdkTest
         public double B206 { get { return (E39 / E25) * Math.Pow((E20 / E33), 0.5); } }
 
         #endregion
-
-        public double H235 { get; set; }
-        private double? _h235 { get; set; }
     }
 }
