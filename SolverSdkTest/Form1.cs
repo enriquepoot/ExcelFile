@@ -145,5 +145,56 @@ namespace SolverSdkTest
 
             return Engine_Action.Continue;
         }
+
+        public double H7_ubCons { get; set; }
+        public double H7_lbCons { get; set; }
+        public double H8_ubCons { get; set; }
+        public double H8_lbCons { get; set; }
+        public void Minimize()
+        {
+            H7_lbCons = 2;
+            H8_lbCons = 1.5;
+
+            H7_ubCons = 20;
+            H8_ubCons = 80;
+
+            double[] ub_cons = { H7_ubCons, H8_ubCons };
+            double[] lb_cons = { H7_lbCons, H8_lbCons };
+
+            double[] ub = { H7, H8 };
+            var count = 0;
+            using (Problem prob = new Problem(Solver_Type.Minimize, 2, 2))
+            {
+                prob.FcnConstraint.UpperBound.Array = ub_cons;
+                prob.FcnConstraint.LowerBound.Array = ub_cons;
+
+                prob.VarDecision.NonNegative();
+                prob.VarDecision.UpperBound.Array = ub;
+
+                prob.ProblemType = Problem_Type.OptNSP;
+                prob.Engine = prob.Engines[Engine.EVOName];
+
+                prob.Evaluators[Eval_Type.Function].OnEvaluate += (e) =>
+                {
+
+                    e.Problem.FcnConstraint.Value[0] = e.Problem.VarDecision.Value[0];
+                    e.Problem.FcnConstraint.Value[1] = e.Problem.VarDecision.Value[1];
+
+                    e.Problem.FcnObjective.Value[e.Problem.ObjectiveIndex] = e.Problem.VarDecision.Value[0] * 2 / 4 + e.Problem.VarDecision.Value[0] * 98;
+                    Console.WriteLine("Eval = " + e.Problem.Engine.Stat.FunctionEvals);
+                    Console.WriteLine("Cont = " + count++);
+                    return Engine_Action.Continue;
+                };
+
+                prob.Solver.Optimize();
+                Optimize_Status status = prob.Solver.OptimizeStatus;
+
+                Console.WriteLine("\r\nnonlinear_example");
+                Console.WriteLine("Status = " + status);
+                Console.WriteLine("x1 = " + prob.VarDecision.FinalValue[0]);
+                Console.WriteLine("x2 = " + prob.VarDecision.FinalValue[1]);
+                Console.WriteLine("Obj = " + prob.FcnObjective.FinalValue[0]);
+            }
+        }
     }
 }
