@@ -3419,7 +3419,7 @@ namespace SolverSdkTest
         {
             get
             {
-                return ((Q446 <= 1 || Q446 == Double.NaN) ? 1 : S232);
+                return ((Q446 <= 1 || Double.IsNaN(Q446)) ? 1 : S232);
             }
         }
         public double B535
@@ -3441,7 +3441,11 @@ namespace SolverSdkTest
         {
             get
             {
-                return (B514 == GeneralClassification.None ? Double.NaN : Math.Min(1, (B514 == GeneralClassification.Mesh ? 1 - K131 * (B533 - J131) : (B514 == GeneralClassification.Vane ? 1 - J143 * (B533 - I143) : (B514 == GeneralClassification.Cyclone ? 1 - M155 * (B533 - K155) : Double.NaN)))));
+                return (B514 == GeneralClassification.None 
+                    ? Double.NaN : Math.Min(1, (B514 == GeneralClassification.Mesh 
+                    ? 1 - K131 * (B533 - J131) : (B514 == GeneralClassification.Vane 
+                    ? 1 - J143 * (B533 - I143) : (B514 == GeneralClassification.Cyclone 
+                    ? 1 - M155 * (B533 - K155) : Double.NaN)))));
             }
         }
         public double K131
@@ -3487,6 +3491,783 @@ namespace SolverSdkTest
             }
         }
 
+        //public double GetZ441Value()
+        //{
+        //    #region Set Variables
+        //    _h235 = H235;
+        //    _h237 = H237;
+        //    _h236 = H236;
+        //    _b216 = B216;
+        //    _b454 = B454;
+        //    _b481 = B481;
+        //    _b891 = B891;
+        //    _e25 = E25;
+        //    _b475 = B475;
+        //    _b482 = B482;
+        //    _b892 = B892;
+        //    _g131 = G131;
+        //    _f131 = F131;
+        //    _f143 = F143;
+        //    _e143 = E143;
+        //    _d143 = D143;
+        //    _h131 = H131;
+        //    _b536 = B536;
+        //    _d155 = D155;
+        //    _i155 = I155;
+        //    _h155 = H155;
+        //    _b531 = B531;
+        //    _r235 = R235;
+        //    _q446 = Q446;
+        //    _r237 = R237;
+        //    _r236 = R236;
+        //    _e33 = E33;
+        //    _e20 = E20;
+        //    _q447 = Q447;
+        //    _x235 = X235;
+        //    _c536 = C536;
+        //    _c531 = C531;
+        //    #endregion
+
+        //    #region First Iteration Values
+        //    var firstH = 1.0;
+        //    var lastH = _h235.Value - 1;
+        //    var previousH = 0.0;
+        //    var currentH = 0.0;
+
+        //    var firstI = 0.0;
+        //    var currentI = 0.0;
+        //    var i441 = 0.0;
+
+        //    var currentJ = 0.0;
+        //    var j441 = 0.0;
+
+        //    var currentL = 0.0;
+
+        //    var currentM = 0.0;
+        //    var m441 = 0.0;
+
+        //    var currentP = 0.0;
+
+        //    var currentQ = 0.0;
+        //    var q441 = 0.0;
+        //    #endregion
+
+        //    #region Get Q441
+        //    for (int i = 240; i <= 440; i++)
+        //    {
+        //        previousH = currentH;
+
+        //        if (i == 240)
+        //            currentH = firstH;
+        //        else if (i == 440)
+        //            currentH = lastH;
+        //        else
+        //            currentH = (lastH - firstH) / 200 + previousH;
+
+        //        if (i == 240)
+        //            currentI = firstI;
+        //        else
+        //            currentI = (1 - 0.5 * (1 - MathHelpers.Erf(_h237.Value * Math.Log(_h236.Value * currentH / (_h235.Value - currentH))))) - (1 - 0.5 * (1 - MathHelpers.Erf(H237 * Math.Log(_h236.Value * previousH / (_h235.Value - previousH)))));
+        //        i441 += currentI;
+
+        //        currentJ = (1 - _b454.Value) * _b216.Value * currentI;
+        //        j441 += currentJ;
+
+        //        currentL = (B3 == Position.Vertical ?
+        //                (currentH < _b481.Value ? 0 : 1) :
+        //                Math.Min(1, (currentH < _b891.Value ?
+        //                    Math.Pow((currentH / 304800), 2) * (1488 * 32.2 * (_e33.Value - _e20.Value)) / (18 * _e25.Value) / _b475.Value * H8 / _b482.Value :
+        //                    (currentH < _b892.Value ?
+        //                        (Math.Pow((currentH / 304800), 1.14)) * 3.54 * (Math.Pow(32.2, 0.71)) * (Math.Pow((_e33.Value - _e20.Value), 0.71)) / ((Math.Pow(_e20.Value, 0.29)) * (Math.Pow(_e25.Value, 0.43))) / _b475.Value * H8 / _b482.Value :
+        //                        1.74 * Math.Pow((32.2 * (_e33.Value - _e20.Value) * (currentH / 304800) / _e20.Value), 0.5) / _b475.Value * H8 / _b482.Value))));
+
+        //        currentM = currentJ * (1 - currentL);
+        //        m441 += currentM;
+
+        //        currentP = (Q231 == GeneralClassification.None
+        //            ? 0
+        //            : (Q231 == GeneralClassification.Mesh
+        //                ? 1 - Math.Exp(-0.238 * _g131.Value * _h131.Value * Math.Max((-0.1677 * 0.6261 + 0.9949 * (Math.Pow(((_e33.Value - _e20.Value) * _b531.Value * (Math.Pow((currentH * 0.000001 * 3.2808), 2)) / (18 * _e25.Value / 1488 * (_f131.Value / 12))), 1.00493))) / (0.6261 + (Math.Pow(((_e33.Value - _e20.Value) * _b531.Value * (Math.Pow((currentH * 0.000001 * 3.2808), 2)) / (18 * _e25.Value / 1488 * (_f131.Value / 12))), 1.00493))), 0))
+        //                : (Q231 == GeneralClassification.Vane
+        //                    ? 1 - Math.Exp(-(_e33.Value - _e20.Value) * Math.Pow((currentH * 0.000001 * 3.2808), 2) * _b531.Value * _f143.Value * _e143.Value / (515.7 * (_e25.Value / 1488) * _d143.Value / 12 * Math.Pow((Math.Cos(_e143.Value)), 2)))
+        //                    : 1 - Math.Exp(-8 * (_e33.Value - _e20.Value) * Math.Pow((currentH * 0.000001 * 3.2808), 2) * _b536.Value / (18 * _e25.Value / 1488 * _d155.Value / 12) * _h155.Value / 12 / (_d155.Value / 12 * Math.Pow((Math.Tan(_i155.Value / 57.3)), 2))))));
+
+        //        currentQ = (currentP > 0.999 ? 0 : currentM * (1 - currentP));
+        //        q441 += currentQ;
+        //    }
+        //    #endregion            
+
+            
+        //    #region First Iteration Values Cleanup
+        //    firstH = 1.0;
+        //    lastH = _h235.Value - 1;
+        //    previousH = 0.0;
+        //    currentH = 0.0;
+
+        //    firstI = 0.0;
+        //    currentI = 0.0;
+
+        //    currentJ = 0.0;
+
+        //    currentL = 0.0;
+
+        //    currentM = 0.0;
+
+        //    currentP = 0.0;
+
+        //    currentQ = 0.0;
+        //    #endregion
+
+        //    #region Second Iteration New Values
+        //    var firstR = 1;
+        //    var lastR = _r235.Value - 1;
+        //    var previousR = 0.0;
+        //    var currentR = 0.0;
+
+        //    var firstS = 0.0;
+        //    var currentS = 0.0;
+        //    var s441 = 0.0;
+
+        //    var currentT = 0.0;
+        //    var t441 = 0.0;
+
+        //    var currentV = 0.0;
+
+        //    var currentW = 0.0;
+        //    var w441 = 0.0;
+
+        //    var firstX = 1.0;
+        //    var lastX = _x235.Value - 1;
+        //    var previousX = 0.0;
+        //    var currentX = 0.0;
+        //    #endregion
+
+        //    #region Real Iteration for Z441
+        //    for (int i = 240; i <= 440; i++)
+        //    {
+        //        previousH = currentH;
+        //        previousR = currentR;
+        //        previousX = currentX;
+
+        //        #region Previous Calculated Columns
+
+        //        if (i == 240)
+        //            currentH = firstH;
+        //        else if (i == 440)
+        //            currentH = lastH;
+        //        else
+        //            currentH = (lastH - firstH) / 200 + previousH;
+
+        //        if (i == 240)
+        //            currentI = firstI;
+        //        else
+        //            currentI = (1 - 0.5 * (1 - MathHelpers.Erf(_h237.Value * Math.Log(_h236.Value * currentH / (_h235.Value - currentH))))) - (1 - 0.5 * (1 - MathHelpers.Erf(H237 * Math.Log(_h236.Value * previousH / (_h235.Value - previousH)))));
+                
+        //        currentJ = (1 - _b454.Value) * _b216.Value * currentI;
+
+        //        currentL = (B3 == Position.Vertical ?
+        //                (currentH < _b481.Value ? 0 : 1) :
+        //                Math.Min(1, (currentH < _b891.Value ?
+        //                    Math.Pow((currentH / 304800), 2) * (1488 * 32.2 * (_e33.Value - _e20.Value)) / (18 * _e25.Value) / _b475.Value * H8 / _b482.Value :
+        //                    (currentH < _b892.Value ?
+        //                        (Math.Pow((currentH / 304800), 1.14)) * 3.54 * (Math.Pow(32.2, 0.71)) * (Math.Pow((_e33.Value - _e20.Value), 0.71)) / ((Math.Pow(_e20.Value, 0.29)) * (Math.Pow(_e25.Value, 0.43))) / _b475.Value * H8 / _b482.Value :
+        //                        1.74 * Math.Pow((32.2 * (_e33.Value - _e20.Value) * (currentH / 304800) / _e20.Value), 0.5) / _b475.Value * H8 / _b482.Value))));
+
+        //        currentM = currentJ * (1 - currentL);
+
+        //        currentP = (Q231 == GeneralClassification.None
+        //            ? 0
+        //            : (Q231 == GeneralClassification.Mesh
+        //                ? 1 - Math.Exp(-0.238 * _g131.Value * _h131.Value * Math.Max((-0.1677 * 0.6261 + 0.9949 * (Math.Pow(((_e33.Value - _e20.Value) * _b531.Value * (Math.Pow((currentH * 0.000001 * 3.2808), 2)) / (18 * _e25.Value / 1488 * (_f131.Value / 12))), 1.00493))) / (0.6261 + (Math.Pow(((_e33.Value - _e20.Value) * _b531.Value * (Math.Pow((currentH * 0.000001 * 3.2808), 2)) / (18 * _e25.Value / 1488 * (_f131.Value / 12))), 1.00493))), 0))
+        //                : (Q231 == GeneralClassification.Vane
+        //                    ? 1 - Math.Exp(-(_e33.Value - _e20.Value) * Math.Pow((currentH * 0.000001 * 3.2808), 2) * _b531.Value * _f143.Value * _e143.Value / (515.7 * (_e25.Value / 1488) * _d143.Value / 12 * Math.Pow((Math.Cos(_e143.Value)), 2)))
+        //                    : 1 - Math.Exp(-8 * (_e33.Value - _e20.Value) * Math.Pow((currentH * 0.000001 * 3.2808), 2) * _b536.Value / (18 * _e25.Value / 1488 * _d155.Value / 12) * _h155.Value / 12 / (_d155.Value / 12 * Math.Pow((Math.Tan(_i155.Value / 57.3)), 2))))));
+
+        //        currentQ = (currentP > 0.999 ? 0 : currentM * (1 - currentP));
+
+        //        #endregion
+
+        //        if (i == 240)
+        //            currentR = firstR;
+        //        else if (i == 440)
+        //            currentR = lastR;
+        //        else
+        //            currentR = (lastR - firstR) / 200 + previousR;
+
+        //        if (i == 240)
+        //            currentS = firstS;
+        //        else
+        //            currentS = ((_q446.Value <= 1 || Double.IsNaN(_q446.Value)) 
+        //                ? (q441 == 0 ? 0 : currentQ / q441) 
+        //                : (1 - 0.5 * (1 - MathHelpers.Erf(_r237.Value * Math.Log(_r236.Value * currentR / (_r235.Value - currentR))))) - (1 - 0.5 * (1 - MathHelpers.Erf(_r237.Value * Math.Log(_r236.Value * previousR / (_r235.Value - previousR))))));
+        //        s441 += currentS;
+
+        //        /*TODO REVIEW*/
+        //        currentT = (Q231 == GeneralClassification.None ? currentM : (_q446.Value <= 1 ? currentQ : _q447.Value * m441 * currentS));
+        //        t441 += currentT;
+
+        //        currentV = (Z231 == GeneralClassification.None 
+        //            ? 0 
+        //            : (Z231 == GeneralClassification.Mesh 
+        //                ? 1 - Math.Exp(-0.238 * _g131.Value * _h131.Value * Math.Max((-0.1677 * 0.6261 + 0.9949 * (Math.Pow(((_e33.Value - _e20.Value) * _c531.Value * (Math.Pow((currentR * 0.000001 * 3.2808), 2)) / (18 * _e25.Value / 1488 * (_f131.Value / 12))), 1.00493))) / (0.6261 + (Math.Pow(((_e33.Value - _e20.Value) * _c531.Value * (Math.Pow((currentR * 0.000001 * 3.2808), 2)) / (18 * _e25.Value / 1488 * (_f131.Value / 12))), 1.00493))), 0)) 
+        //                : (Z231 == GeneralClassification.Vane 
+        //                    ? 1 - Math.Exp(-(_e33.Value - _e20.Value) * Math.Pow((currentR * 0.000001 * 3.2808), 2) * _c531.Value * _f143.Value * _e143.Value / (515.7 * (_e25.Value / 1488) * _f143.Value / 12 * Math.Pow((Math.Cos(_e143.Value)), 2))) 
+        //                    : 1 - Math.Exp(-8 * (_e33.Value - _e20.Value) * Math.Pow((currentR * 0.000001 * 3.2808), 2) * _c536.Value / (18 * _e25.Value / 1488 * _d155.Value / 12) * _h155.Value / 12 / (_d155.Value / 12 * Math.Pow((Math.Tan(_i155.Value / 57.3)), 2))))));
+
+        //        currentW = currentT * (1 - currentV);
+        //        w441 += currentW;
+
+        //        if (i == 240)
+        //            currentX = firstX;
+        //        else if (i == 440)
+        //            currentX = lastX;
+        //        else
+        //            currentX = (lastX - firstX) / 200 + previousX;
+
+        //    }
+        //    #endregion
+
+        //    return 0;
+        //}
+
+        private double? _z441;
+        public double Z441
+        {
+            get
+            {
+                _z441 = _z441 ?? GetZ441Value();
+                return _z441.Value;
+            }
+        }
+        #endregion
+
+        
+        public double GetJ441Value()
+        {
+
+            #region Set Variables
+            _h235 = H235;
+            _h237 = H237;
+            _h236 = H236;
+            _b216 = B216;
+            _b454 = B454;
+            #endregion
+
+            #region First Iteration Values
+            var firstH = 1.0;
+            var lastH = _h235.Value - 1;
+            var previousH = 0.0;
+            var currentH = 0.0;
+
+            var firstI = 0.0;
+            var currentI = 0.0;
+
+            var currentJ = 0.0;
+            var j441 = 0.0;
+            #endregion
+
+            #region Get j441
+            for (int i = 240; i <= 440; i++)
+            {
+                previousH = currentH;
+
+                if (i == 240)
+                    currentH = firstH;
+                else if (i == 440)
+                    currentH = lastH;
+                else
+                    currentH = (lastH - firstH) / 200 + previousH;
+
+                if (i == 240)
+                    currentI = firstI;
+                else
+                    currentI = (1 - 0.5 * (1 - MathHelpers.Erf(_h237.Value * Math.Log(_h236.Value * currentH / (_h235.Value - currentH))))) - (1 - 0.5 * (1 - MathHelpers.Erf(_h237.Value * Math.Log(_h236.Value * previousH / (_h235.Value - previousH)))));
+                
+                currentJ = (1 - _b454.Value) * _b216.Value * currentI;
+                j441 += currentJ;
+            }
+            #endregion
+
+            return j441;
+        }
+
+        public double GetM441Value()
+        {
+            #region Set Variables
+            _h235 = H235;
+            _h237 = H237;
+            _h236 = H236;
+            _b216 = B216;
+            _b454 = B454;
+            _b481 = B481;
+            _b891 = B891;
+            _e25 = E25;
+            _e33 = E33;
+            _e20 = E20;
+            _b475 = B475;
+            _b482 = B482;
+            _b892 = B892;
+            #endregion
+
+            #region First Iteration Values
+            var firstH = 1.0;
+            var lastH = _h235.Value - 1;
+            var previousH = 0.0;
+            var currentH = 0.0;
+
+            var firstI = 0.0;
+            var currentI = 0.0;
+            var i441 = 0.0;
+
+            var currentJ = 0.0;
+            var j441 = 0.0;
+
+            var currentL = 0.0;
+
+            var currentM = 0.0;
+            var m441 = 0.0;
+            #endregion
+
+            #region Get M441
+            for (int i = 240; i <= 440; i++)
+            {
+                previousH = currentH;
+
+                if (i == 240)
+                    currentH = firstH;
+                else if (i == 440)
+                    currentH = lastH;
+                else
+                    currentH = (lastH - firstH) / 200 + previousH;
+
+                if (i == 240)
+                    currentI = firstI;
+                else
+                    currentI = (1 - 0.5 * (1 - MathHelpers.Erf(_h237.Value * Math.Log(_h236.Value * currentH / (_h235.Value - currentH))))) - 
+                        (1 - 0.5 * (1 - MathHelpers.Erf(_h237.Value * Math.Log(_h236.Value * previousH / (_h235.Value - previousH)))));
+                i441 += currentI;
+
+                currentJ = (1 - _b454.Value) * _b216.Value * currentI;
+                j441 += currentJ;
+
+                currentL = (B3 == Position.Vertical ?
+                        (currentH < _b481.Value ? 0 : 1) :
+                        Math.Min(1, (currentH < _b891.Value ?
+                            Math.Pow((currentH / 304800), 2) * (1488 * 32.2 * (_e33.Value - _e20.Value)) / (18 * _e25.Value) / _b475.Value * H8 / _b482.Value :
+                            (currentH < _b892.Value ?
+                                (Math.Pow((currentH / 304800), 1.14)) * 3.54 * (Math.Pow(32.2, 0.71)) * (Math.Pow((_e33.Value - _e20.Value), 0.71)) / 
+                                ((Math.Pow(_e20.Value, 0.29)) * (Math.Pow(_e25.Value, 0.43))) / _b475.Value * H8 / _b482.Value :
+                                1.74 * Math.Pow((32.2 * (_e33.Value - _e20.Value) * (currentH / 304800) / _e20.Value), 0.5) / _b475.Value * H8 / _b482.Value))));
+
+                currentM = currentJ * (1 - currentL);
+                m441 += currentM;
+            }
+            #endregion
+
+            return m441;
+        }
+
+        public double GetQ441Value()
+        {
+            #region Set Variables
+            _h235 = H235;
+            _h237 = H237;
+            _h236 = H236;
+            _b216 = B216;
+            _b454 = B454;
+            _b481 = B481;
+            _b891 = B891;
+            _e33 = E33;
+            _e20 = E20;
+            _e25 = E25;
+            _b475 = B475;
+            _b482 = B482;
+            _b892 = B892;
+            _g131 = G131;
+            _f131 = F131;
+            _f143 = F143;
+            _e143 = E143;
+            _d143 = D143;
+            _h131 = H131;
+            _b536 = B536;
+            _d155 = D155;
+            _i155 = I155;
+            _h155 = H155;
+            _b531 = B531;
+            #endregion
+
+            #region First Iteration Values
+            var firstH = 1.0;
+            var lastH = _h235.Value - 1;
+            var previousH = 0.0;
+            var currentH = 0.0;
+
+            var firstI = 0.0;
+            var currentI = 0.0;
+
+            var currentJ = 0.0;
+
+            var currentL = 0.0;
+
+            var currentM = 0.0;
+
+            var currentP = 0.0;
+
+            var currentQ = 0.0;
+            var q441 = 0.0;
+            #endregion
+
+            #region Get Q441
+            for (int i = 240; i <= 440; i++)
+            {
+                previousH = currentH;
+
+                if (i == 240)
+                    currentH = firstH;
+                else if (i == 440)
+                    currentH = lastH;
+                else
+                    currentH = (lastH - firstH) / 200 + previousH;
+
+                if (i == 240)
+                    currentI = firstI;
+                else
+                    currentI = (1 - 0.5 * (1 - MathHelpers.Erf(_h237.Value * Math.Log(_h236.Value * currentH / (_h235.Value - currentH))))) - 
+                        (1 - 0.5 * (1 - MathHelpers.Erf(_h237.Value * Math.Log(_h236.Value * previousH / (_h235.Value - previousH)))));
+
+                currentJ = (1 - _b454.Value) * _b216.Value * currentI;
+
+                currentL = (B3 == Position.Vertical ?
+                        (currentH < _b481.Value ? 0 : 1) :
+                        Math.Min(1, (currentH < _b891.Value ?
+                            Math.Pow((currentH / 304800), 2) * (1488 * 32.2 * (_e33.Value - _e20.Value)) / (18 * _e25.Value) / _b475.Value * H8 / _b482.Value :
+                            (currentH < _b892.Value ?
+                                (Math.Pow((currentH / 304800), 1.14)) * 3.54 * (Math.Pow(32.2, 0.71)) * (Math.Pow((_e33.Value - _e20.Value), 0.71)) / 
+                                ((Math.Pow(_e20.Value, 0.29)) * (Math.Pow(_e25.Value, 0.43))) / _b475.Value * H8 / _b482.Value :
+                                1.74 * Math.Pow((32.2 * (_e33.Value - _e20.Value) * (currentH / 304800) / _e20.Value), 0.5) / _b475.Value * H8 / _b482.Value))));
+
+                currentM = currentJ * (1 - currentL);
+
+                currentP = (Q231 == GeneralClassification.None
+                    ? 0
+                    : (Q231 == GeneralClassification.Mesh
+                        ? 1 - Math.Exp(-0.238 * _g131.Value * _h131.Value * Math.Max((-0.1677 * 0.6261 + 0.9949 * 
+                        (Math.Pow(((_e33.Value - _e20.Value) * _b531.Value * (Math.Pow((currentH * 0.000001 * 3.2808), 2)) / 
+                        (18 * _e25.Value / 1488 * (_f131.Value / 12))), 1.00493))) / (0.6261 + (Math.Pow(((_e33.Value - _e20.Value) * _b531.Value * 
+                        (Math.Pow((currentH * 0.000001 * 3.2808), 2)) / (18 * _e25.Value / 1488 * (_f131.Value / 12))), 1.00493))), 0))
+                        : (Q231 == GeneralClassification.Vane
+                            ? 1 - Math.Exp(-(_e33.Value - _e20.Value) * Math.Pow((currentH * 0.000001 * 3.2808), 2) * _b531.Value * _f143.Value * _e143.Value / 
+                            (515.7 * (_e25.Value / 1488) * _d143.Value / 12 * Math.Pow((Math.Cos(_e143.Value)), 2)))
+                            : 1 - Math.Exp(-8 * (_e33.Value - _e20.Value) * Math.Pow((currentH * 0.000001 * 3.2808), 2) * _b536.Value / 
+                            (18 * _e25.Value / 1488 * _d155.Value / 12) * _h155.Value / 12 / (_d155.Value / 12 * Math.Pow((Math.Tan(_i155.Value / 57.3)), 2))))));
+
+                currentQ = (currentP > 0.999 ? 0 : currentM * (1 - currentP));
+                q441 += currentQ;
+            }
+            #endregion
+
+            return q441;
+        }
+
+        public double GetT441Value()
+        {
+            #region Set Variables
+            _h235 = H235;
+            _h237 = H237;
+            _h236 = H236;
+            _b216 = B216;
+            _b454 = B454;
+            _b481 = B481;
+            _b891 = B891;
+            _e25 = E25;
+            _e33 = E33;
+            _e20 = E20;
+            _b475 = B475;
+            _b482 = B482;
+            _b892 = B892;
+            _g131 = G131;
+            _f131 = F131;
+            _f143 = F143;
+            _e143 = E143;
+            _d143 = D143;
+            _h131 = H131;
+            _b536 = B536;
+            _d155 = D155;
+            _i155 = I155;
+            _h155 = H155;
+            _b531 = B531;
+            _r235 = R235;
+            _q446 = Q446;
+            _r237 = R237;
+            _r236 = R236;
+            _q447 = Q447;
+            #endregion
+
+            #region First Iteration Values
+            var firstH = 1.0;
+            var lastH = _h235.Value - 1;
+            var previousH = 0.0;
+            var currentH = 0.0;
+
+            var firstI = 0.0;
+            var currentI = 0.0;
+
+            var currentJ = 0.0;
+
+            var currentL = 0.0;
+
+            var currentM = 0.0;
+
+            var currentP = 0.0;
+
+            var currentQ = 0.0;
+
+            var firstR = 1;
+            var lastR = _r235.Value - 1;
+            var previousR = 0.0;
+            var currentR = 0.0;
+
+            var firstS = 0.0;
+            var currentS = 0.0;
+
+            var currentT = 0.0;
+            var t441 = 0.0;
+            #endregion
+
+            var q441 = Q441;
+            var m441 = M441;
+
+            #region Get T441
+            for (int i = 240; i <= 440; i++)
+            {
+                previousH = currentH;
+                previousR = currentR;
+
+                if (i == 240)
+                    currentH = firstH;
+                else if (i == 440)
+                    currentH = lastH;
+                else
+                    currentH = (lastH - firstH) / 200 + previousH;
+
+                if (i == 240)
+                    currentI = firstI;
+                else
+                    currentI = (1 - 0.5 * (1 - MathHelpers.Erf(_h237.Value * Math.Log(_h236.Value * currentH / (_h235.Value - currentH))))) - 
+                        (1 - 0.5 * (1 - MathHelpers.Erf(_h237.Value * Math.Log(_h236.Value * previousH / (_h235.Value - previousH)))));
+
+                currentJ = (1 - _b454.Value) * _b216.Value * currentI;
+
+                currentL = (B3 == Position.Vertical ?
+                        (currentH < _b481.Value ? 0 : 1) :
+                        Math.Min(1, (currentH < _b891.Value ?
+                            Math.Pow((currentH / 304800), 2) * (1488 * 32.2 * (_e33.Value - _e20.Value)) / (18 * _e25.Value) / _b475.Value * H8 / _b482.Value :
+                            (currentH < _b892.Value ?
+                                (Math.Pow((currentH / 304800), 1.14)) * 3.54 * (Math.Pow(32.2, 0.71)) * (Math.Pow((_e33.Value - _e20.Value), 0.71)) / 
+                                ((Math.Pow(_e20.Value, 0.29)) * (Math.Pow(_e25.Value, 0.43))) / _b475.Value * H8 / _b482.Value :
+                                1.74 * Math.Pow((32.2 * (_e33.Value - _e20.Value) * (currentH / 304800) / _e20.Value), 0.5) / _b475.Value * H8 / _b482.Value))));
+
+                currentM = currentJ * (1 - currentL);
+
+                currentP = (Q231 == GeneralClassification.None
+                    ? 0
+                    : (Q231 == GeneralClassification.Mesh
+                        ? 1 - Math.Exp(-0.238 * _g131.Value * _h131.Value * Math.Max((-0.1677 * 0.6261 + 0.9949 * 
+                        (Math.Pow(((_e33.Value - _e20.Value) * _b531.Value * (Math.Pow((currentH * 0.000001 * 3.2808), 2)) / 
+                        (18 * _e25.Value / 1488 * (_f131.Value / 12))), 1.00493))) / (0.6261 + (Math.Pow(((_e33.Value - _e20.Value) * _b531.Value * 
+                        (Math.Pow((currentH * 0.000001 * 3.2808), 2)) / (18 * _e25.Value / 1488 * (_f131.Value / 12))), 1.00493))), 0))
+                        : (Q231 == GeneralClassification.Vane
+                            ? 1 - Math.Exp(-(_e33.Value - _e20.Value) * Math.Pow((currentH * 0.000001 * 3.2808), 2) * _b531.Value * _f143.Value * _e143.Value / 
+                            (515.7 * (_e25.Value / 1488) * _d143.Value / 12 * Math.Pow((Math.Cos(_e143.Value)), 2)))
+                            : 1 - Math.Exp(-8 * (_e33.Value - _e20.Value) * Math.Pow((currentH * 0.000001 * 3.2808), 2) * _b536.Value / 
+                            (18 * _e25.Value / 1488 * _d155.Value / 12) * _h155.Value / 12 / (_d155.Value / 12 * Math.Pow((Math.Tan(_i155.Value / 57.3)), 2))))));
+
+                currentQ = (currentP > 0.999 ? 0 : currentM * (1 - currentP));
+
+                if (i == 240)
+                    currentR = firstR;
+                else if (i == 440)
+                    currentR = lastR;
+                else
+                    currentR = (lastR - firstR) / 200 + previousR;
+
+                if (i == 240)
+                    currentS = firstS;
+                else
+                    currentS = ((_q446.Value <= 1 || Double.IsNaN(_q446.Value))
+                        ? (q441 == 0 ? 0 : currentQ / q441)
+                        : (1 - 0.5 * (1 - MathHelpers.Erf(_r237.Value * Math.Log(_r236.Value * currentR / (_r235.Value - currentR))))) - 
+                        (1 - 0.5 * (1 - MathHelpers.Erf(_r237.Value * Math.Log(_r236.Value * previousR / (_r235.Value - previousR))))));
+                
+                /*TODO REVIEW*/
+                currentT = (Q231 == GeneralClassification.None ? currentM : (_q446.Value <= 1 ? currentQ : _q447.Value * m441 * currentS));
+                t441 += currentT;
+            }
+            #endregion
+
+            return t441;
+        }
+
+        public double GetW441Value()
+        {
+            #region Set Variables
+            _h235 = H235;
+            _h237 = H237;
+            _h236 = H236;
+            _b216 = B216;
+            _b454 = B454;
+            _b481 = B481;
+            _b891 = B891;
+            _e25 = E25;
+            _b475 = B475;
+            _b482 = B482;
+            _b892 = B892;
+            _g131 = G131;
+            _f131 = F131;
+            _f143 = F143;
+            _e143 = E143;
+            _d143 = D143;
+            _h131 = H131;
+            _b536 = B536;
+            _d155 = D155;
+            _i155 = I155;
+            _h155 = H155;
+            _b531 = B531;
+            _r235 = R235;
+            _q446 = Q446;
+            _r237 = R237;
+            _r236 = R236;
+            _e33 = E33;
+            _e20 = E20;
+            _q447 = Q447;
+            _x235 = X235;
+            _c536 = C536;
+            _c531 = C531;
+            #endregion
+
+            #region First Iteration Values
+            var firstH = 1.0;
+            var lastH = _h235.Value - 1;
+            var previousH = 0.0;
+            var currentH = 0.0;
+
+            var firstI = 0.0;
+            var currentI = 0.0;
+
+            var currentJ = 0.0;
+
+            var currentL = 0.0;
+
+            var currentM = 0.0;
+            var m441 = M441;
+
+            var currentP = 0.0;
+
+            var currentQ = 0.0;
+            var q441 = Q441;
+
+            var firstR = 1;
+            var lastR = _r235.Value - 1;
+            var previousR = 0.0;
+            var currentR = 0.0;
+
+            var firstS = 0.0;
+            var currentS = 0.0;
+
+            var currentT = 0.0;
+
+            var currentV = 0.0;
+
+            var currentW = 0.0;
+            var w441 = 0.0;
+            #endregion
+
+            #region Get W441
+            for (int i = 240; i <= 440; i++)
+            {
+                previousH = currentH;
+                previousR = currentR;
+
+                if (i == 240)
+                    currentH = firstH;
+                else if (i == 440)
+                    currentH = lastH;
+                else
+                    currentH = (lastH - firstH) / 200 + previousH;
+
+                if (i == 240)
+                    currentI = firstI;
+                else
+                    currentI = (1 - 0.5 * (1 - MathHelpers.Erf(_h237.Value * Math.Log(_h236.Value * currentH / (_h235.Value - currentH))))) -
+                        (1 - 0.5 * (1 - MathHelpers.Erf(_h237.Value * Math.Log(_h236.Value * previousH / (_h235.Value - previousH)))));
+
+                currentJ = (1 - _b454.Value) * _b216.Value * currentI;
+
+                currentL = (B3 == Position.Vertical ?
+                        (currentH < _b481.Value ? 0 : 1) :
+                        Math.Min(1, (currentH < _b891.Value ?
+                            Math.Pow((currentH / 304800), 2) * (1488 * 32.2 * (_e33.Value - _e20.Value)) / (18 * _e25.Value) / _b475.Value * H8 / _b482.Value :
+                            (currentH < _b892.Value ?
+                                (Math.Pow((currentH / 304800), 1.14)) * 3.54 * (Math.Pow(32.2, 0.71)) * (Math.Pow((_e33.Value - _e20.Value), 0.71)) /
+                                ((Math.Pow(_e20.Value, 0.29)) * (Math.Pow(_e25.Value, 0.43))) / _b475.Value * H8 / _b482.Value :
+                                1.74 * Math.Pow((32.2 * (_e33.Value - _e20.Value) * (currentH / 304800) / _e20.Value), 0.5) / _b475.Value * H8 / _b482.Value))));
+
+                currentM = currentJ * (1 - currentL);
+
+                currentP = (Q231 == GeneralClassification.None
+                    ? 0
+                    : (Q231 == GeneralClassification.Mesh
+                        ? 1 - Math.Exp(-0.238 * _g131.Value * _h131.Value * Math.Max((-0.1677 * 0.6261 + 0.9949 *
+                        (Math.Pow(((_e33.Value - _e20.Value) * _b531.Value * (Math.Pow((currentH * 0.000001 * 3.2808), 2)) /
+                        (18 * _e25.Value / 1488 * (_f131.Value / 12))), 1.00493))) / (0.6261 + (Math.Pow(((_e33.Value - _e20.Value) * _b531.Value *
+                        (Math.Pow((currentH * 0.000001 * 3.2808), 2)) / (18 * _e25.Value / 1488 * (_f131.Value / 12))), 1.00493))), 0))
+                        : (Q231 == GeneralClassification.Vane
+                            ? 1 - Math.Exp(-(_e33.Value - _e20.Value) * Math.Pow((currentH * 0.000001 * 3.2808), 2) * _b531.Value * _f143.Value * _e143.Value /
+                            (515.7 * (_e25.Value / 1488) * _d143.Value / 12 * Math.Pow((Math.Cos(_e143.Value)), 2)))
+                            : 1 - Math.Exp(-8 * (_e33.Value - _e20.Value) * Math.Pow((currentH * 0.000001 * 3.2808), 2) * _b536.Value /
+                            (18 * _e25.Value / 1488 * _d155.Value / 12) * _h155.Value / 12 / (_d155.Value / 12 * Math.Pow((Math.Tan(_i155.Value / 57.3)), 2))))));
+
+                currentQ = (currentP > 0.999 ? 0 : currentM * (1 - currentP));
+
+                if (i == 240)
+                    currentR = firstR;
+                else if (i == 440)
+                    currentR = lastR;
+                else
+                    currentR = (lastR - firstR) / 200 + previousR;
+
+                if (i == 240)
+                    currentS = firstS;
+                else
+                    currentS = ((_q446.Value <= 1 || Double.IsNaN(_q446.Value))
+                        ? (q441 == 0 ? 0 : currentQ / q441)
+                        : (1 - 0.5 * (1 - MathHelpers.Erf(_r237.Value * Math.Log(_r236.Value * currentR / 
+                        (_r235.Value - currentR))))) - (1 - 0.5 * (1 - MathHelpers.Erf(_r237.Value * Math.Log(_r236.Value * previousR / (_r235.Value - previousR))))));
+                
+                /*TODO REVIEW*/
+                currentT = (Q231 == GeneralClassification.None ? currentM : (_q446.Value <= 1 ? currentQ : _q447.Value * m441 * currentS));
+
+                currentV = (Z231 == GeneralClassification.None
+                    ? 0
+                    : (Z231 == GeneralClassification.Mesh
+                        ? 1 - Math.Exp(-0.238 * _g131.Value * _h131.Value * Math.Max((-0.1677 * 0.6261 + 0.9949 * 
+                        (Math.Pow(((_e33.Value - _e20.Value) * _c531.Value * (Math.Pow((currentR * 0.000001 * 3.2808), 2)) / 
+                        (18 * _e25.Value / 1488 * (_f131.Value / 12))), 1.00493))) / (0.6261 + (Math.Pow(((_e33.Value - _e20.Value) * _c531.Value * 
+                        (Math.Pow((currentR * 0.000001 * 3.2808), 2)) / (18 * _e25.Value / 1488 * (_f131.Value / 12))), 1.00493))), 0))
+                        : (Z231 == GeneralClassification.Vane
+                            ? 1 - Math.Exp(-(_e33.Value - _e20.Value) * Math.Pow((currentR * 0.000001 * 3.2808), 2) * _c531.Value * _f143.Value * _e143.Value / 
+                            (515.7 * (_e25.Value / 1488) * _f143.Value / 12 * Math.Pow((Math.Cos(_e143.Value)), 2)))
+                            : 1 - Math.Exp(-8 * (_e33.Value - _e20.Value) * Math.Pow((currentR * 0.000001 * 3.2808), 2) * _c536.Value / 
+                            (18 * _e25.Value / 1488 * _d155.Value / 12) * _h155.Value / 12 / (_d155.Value / 12 * Math.Pow((Math.Tan(_i155.Value / 57.3)), 2))))));
+
+                currentW = currentT * (1 - currentV);
+                w441 += currentW;
+            }
+            #endregion
+
+            return w441;
+        }
+        
         public double GetZ441Value()
         {
             #region Set Variables
@@ -3518,8 +4299,18 @@ namespace SolverSdkTest
             _r236 = R236;
             _e33 = E33;
             _e20 = E20;
+            _q447 = Q447;
+            _x235 = X235;
+            _c536 = C536;
+            _c531 = C531;
+            _x235 = X235;
+            _x237 = X237;
+            _x236 = X236;
+            _x446 = X446;
+            _x447 = X447;
             #endregion
 
+            #region First Iteration Values
             var firstH = 1.0;
             var lastH = _h235.Value - 1;
             var previousH = 0.0;
@@ -3527,20 +4318,18 @@ namespace SolverSdkTest
 
             var firstI = 0.0;
             var currentI = 0.0;
-            var i441 = 0.0;
 
             var currentJ = 0.0;
-            var j441 = 0.0;
 
             var currentL = 0.0;
 
             var currentM = 0.0;
-            var m441 = 0.0;
+            var m441 = M441;
 
             var currentP = 0.0;
 
             var currentQ = 0.0;
-            var q441 = 0.0;
+            var q441 = Q441;
 
             var firstR = 1;
             var lastR = _r235.Value - 1;
@@ -3548,14 +4337,36 @@ namespace SolverSdkTest
             var currentR = 0.0;
 
             var firstS = 0.0;
-            var previousS = 0.0;
             var currentS = 0.0;
 
-            #region H to R
+            var currentT = 0.0;
+            var t441 = T441;
+
+            var currentV = 0.0;
+
+            var currentW = 0.0;
+            var w441 = W441;
+
+            var firstX = 1.0;
+            var lastX = _x235.Value - 1;
+            var previousX = 0.0;
+            var currentX = 0.0;
+
+            var firstY = 0.0;
+            var previousY = 0.0;
+            var currentY = 0.0;
+
+            var previousZ = 0.0;
+            var currentZ = 0.0;
+            var z441 = 0.0;
+            #endregion
+
+            #region Get W441
             for (int i = 240; i <= 440; i++)
             {
                 previousH = currentH;
                 previousR = currentR;
+                previousX = currentX;
 
                 if (i == 240)
                     currentH = firstH;
@@ -3567,33 +4378,36 @@ namespace SolverSdkTest
                 if (i == 240)
                     currentI = firstI;
                 else
-                    currentI = (1 - 0.5 * (1 - MathHelpers.Erf(_h237.Value * Math.Log(_h236.Value * currentH / (_h235.Value - currentH))))) - (1 - 0.5 * (1 - MathHelpers.Erf(H237 * Math.Log(_h236.Value * previousH / (_h235.Value - previousH)))));
-                i441 += currentI;
+                    currentI = (1 - 0.5 * (1 - MathHelpers.Erf(_h237.Value * Math.Log(_h236.Value * currentH / (_h235.Value - currentH))))) -
+                        (1 - 0.5 * (1 - MathHelpers.Erf(_h237.Value * Math.Log(_h236.Value * previousH / (_h235.Value - previousH)))));
 
                 currentJ = (1 - _b454.Value) * _b216.Value * currentI;
-                j441 += currentJ;
 
                 currentL = (B3 == Position.Vertical ?
                         (currentH < _b481.Value ? 0 : 1) :
                         Math.Min(1, (currentH < _b891.Value ?
                             Math.Pow((currentH / 304800), 2) * (1488 * 32.2 * (_e33.Value - _e20.Value)) / (18 * _e25.Value) / _b475.Value * H8 / _b482.Value :
                             (currentH < _b892.Value ?
-                                (Math.Pow((currentH / 304800), 1.14)) * 3.54 * (Math.Pow(32.2, 0.71)) * (Math.Pow((_e33.Value - _e20.Value), 0.71)) / ((Math.Pow(_e20.Value, 0.29)) * (Math.Pow(_e25.Value, 0.43))) / _b475.Value * H8 / _b482.Value :
+                                (Math.Pow((currentH / 304800), 1.14)) * 3.54 * (Math.Pow(32.2, 0.71)) * (Math.Pow((_e33.Value - _e20.Value), 0.71)) /
+                                ((Math.Pow(_e20.Value, 0.29)) * (Math.Pow(_e25.Value, 0.43))) / _b475.Value * H8 / _b482.Value :
                                 1.74 * Math.Pow((32.2 * (_e33.Value - _e20.Value) * (currentH / 304800) / _e20.Value), 0.5) / _b475.Value * H8 / _b482.Value))));
 
                 currentM = currentJ * (1 - currentL);
-                m441 += currentM;
 
                 currentP = (Q231 == GeneralClassification.None
                     ? 0
                     : (Q231 == GeneralClassification.Mesh
-                        ? 1 - Math.Exp(-0.238 * _g131.Value * _h131.Value * Math.Max((-0.1677 * 0.6261 + 0.9949 * (Math.Pow(((_e33.Value - _e20.Value) * _b531.Value * (Math.Pow((currentH * 0.000001 * 3.2808), 2)) / (18 * _e25.Value / 1488 * (_f131.Value / 12))), 1.00493))) / (0.6261 + (Math.Pow(((_e33.Value - _e20.Value) * _b531.Value * (Math.Pow((currentH * 0.000001 * 3.2808), 2)) / (18 * _e25.Value / 1488 * (_f131.Value / 12))), 1.00493))), 0))
+                        ? 1 - Math.Exp(-0.238 * _g131.Value * _h131.Value * Math.Max((-0.1677 * 0.6261 + 0.9949 *
+                        (Math.Pow(((_e33.Value - _e20.Value) * _b531.Value * (Math.Pow((currentH * 0.000001 * 3.2808), 2)) /
+                        (18 * _e25.Value / 1488 * (_f131.Value / 12))), 1.00493))) / (0.6261 + (Math.Pow(((_e33.Value - _e20.Value) * _b531.Value *
+                        (Math.Pow((currentH * 0.000001 * 3.2808), 2)) / (18 * _e25.Value / 1488 * (_f131.Value / 12))), 1.00493))), 0))
                         : (Q231 == GeneralClassification.Vane
-                            ? 1 - Math.Exp(-(_e33.Value - _e20.Value) * Math.Pow((currentH * 0.000001 * 3.2808), 2) * _b531.Value * _f143.Value * _e143.Value / (515.7 * (_e25.Value / 1488) * _d143.Value / 12 * Math.Pow((Math.Cos(_e143.Value)), 2)))
-                            : 1 - Math.Exp(-8 * (_e33.Value - _e20.Value) * Math.Pow((currentH * 0.000001 * 3.2808), 2) * _b536.Value / (18 * _e25.Value / 1488 * _d155.Value / 12) * _h155.Value / 12 / (_d155.Value / 12 * Math.Pow((Math.Tan(_i155.Value / 57.3)), 2))))));
+                            ? 1 - Math.Exp(-(_e33.Value - _e20.Value) * Math.Pow((currentH * 0.000001 * 3.2808), 2) * _b531.Value * _f143.Value * _e143.Value /
+                            (515.7 * (_e25.Value / 1488) * _d143.Value / 12 * Math.Pow((Math.Cos(_e143.Value)), 2)))
+                            : 1 - Math.Exp(-8 * (_e33.Value - _e20.Value) * Math.Pow((currentH * 0.000001 * 3.2808), 2) * _b536.Value /
+                            (18 * _e25.Value / 1488 * _d155.Value / 12) * _h155.Value / 12 / (_d155.Value / 12 * Math.Pow((Math.Tan(_i155.Value / 57.3)), 2))))));
 
                 currentQ = (currentP > 0.999 ? 0 : currentM * (1 - currentP));
-                q441 += currentQ;
 
                 if (i == 240)
                     currentR = firstR;
@@ -3601,23 +4415,58 @@ namespace SolverSdkTest
                     currentR = lastR;
                 else
                     currentR = (lastR - firstR) / 200 + previousR;
-            }
-            #endregion
 
-            for (int i = 240; i <= 440; i++)
-            {
                 if (i == 240)
                     currentS = firstS;
                 else
-                    currentS = ((_q446.Value <= 1 || _q446.Value == Double.NaN) ? (q441 == 0 ? 0 : currentQ / q441) : (1 - 0.5 * (1 - MathHelpers.Erf(_r237.Value * Math.Log(_r236.Value * currentR / (_r235.Value - currentR))))) - (1 - 0.5 * (1 - MathHelpers.Erf(_r237.Value * Math.Log(_r236.Value * previousR / (_r235.Value - previousR))))));
+                    currentS = ((_q446.Value <= 1 || Double.IsNaN(_q446.Value))
+                        ? (q441 == 0 ? 0 : currentQ / q441)
+                        : (1 - 0.5 * (1 - MathHelpers.Erf(_r237.Value * Math.Log(_r236.Value * currentR / 
+                        (_r235.Value - currentR))))) - (1 - 0.5 * (1 - MathHelpers.Erf(_r237.Value * Math.Log(_r236.Value * previousR / (_r235.Value - previousR))))));
+                
+                /*TODO REVIEW*/
+                currentT = (Q231 == GeneralClassification.None ? currentM : (_q446.Value <= 1 ? currentQ : _q447.Value * m441 * currentS));
+
+                currentV = (Z231 == GeneralClassification.None
+                    ? 0
+                    : (Z231 == GeneralClassification.Mesh
+                        ? 1 - Math.Exp(-0.238 * _g131.Value * _h131.Value * Math.Max((-0.1677 * 0.6261 + 0.9949 * 
+                        (Math.Pow(((_e33.Value - _e20.Value) * _c531.Value * (Math.Pow((currentR * 0.000001 * 3.2808), 2)) / 
+                        (18 * _e25.Value / 1488 * (_f131.Value / 12))), 1.00493))) / (0.6261 + (Math.Pow(((_e33.Value - _e20.Value) * _c531.Value * 
+                        (Math.Pow((currentR * 0.000001 * 3.2808), 2)) / (18 * _e25.Value / 1488 * (_f131.Value / 12))), 1.00493))), 0))
+                        : (Z231 == GeneralClassification.Vane
+                            ? 1 - Math.Exp(-(_e33.Value - _e20.Value) * Math.Pow((currentR * 0.000001 * 3.2808), 2) * _c531.Value * _f143.Value * _e143.Value / 
+                            (515.7 * (_e25.Value / 1488) * _f143.Value / 12 * Math.Pow((Math.Cos(_e143.Value)), 2)))
+                            : 1 - Math.Exp(-8 * (_e33.Value - _e20.Value) * Math.Pow((currentR * 0.000001 * 3.2808), 2) * _c536.Value / 
+                            (18 * _e25.Value / 1488 * _d155.Value / 12) * _h155.Value / 12 / (_d155.Value / 12 * Math.Pow((Math.Tan(_i155.Value / 57.3)), 2))))));
+
+                currentW = currentT * (1 - currentV);
+
+                if (i == 240)
+                    currentX = firstX;
+                else if (i == 440)
+                    currentX = lastX;
+                else
+                    currentX = (lastX - firstX) / 200 + previousX;
+
+                if (i == 240)
+                    currentY = firstY;
+                else
+                    currentY = ((_x446.Value <= 1 || Double.IsNaN(_x446.Value)) 
+                        ? (w441 == 0 
+                            ? 0 
+                            : currentW / w441) 
+                        : (1 - 0.5 * (1 - MathHelpers.Erf(_x237.Value * Math.Log(_x236.Value * currentX / (_x235.Value - currentX))))) - 
+                        (1 - 0.5 * (1 - MathHelpers.Erf(_x237.Value * Math.Log(_x236.Value * previousX / (_x235.Value - previousX))))));
+
+                currentZ = (Z231 == GeneralClassification.None ? currentT : (_x446.Value <= 1 ? currentT * (1 - currentV) : _x447.Value * t441 * currentY));
+                z441 += currentZ;
 
             }
+            #endregion
 
-            return 0;
+            return z441;
         }
-
-        public double Z441 { get; set; }
-        #endregion
 
         public SeparatorSizing()
         {
@@ -4006,31 +4855,9 @@ namespace SolverSdkTest
             B222 = 0.72;
             B219 = 5;
             S232 = 2;
+            W232 = 2;
 
-            GetZ441Value();
-        }
-
-        public double Solve()
-        {
-            //int varNumber = 2;
-            //int constNumber = 8;
-
-            //double[] ub_contraints = new double[constNumber]l;
-
-            //using (Problem prob = new Problem(Solver_Type.Minimize, varNumber, constNumber))
-            //{
-            //    prob.
-            //}
-
-            return 0;
-        }
-
-        public double Test
-        {
-            get
-            {
-                return 0;
-            }
+            //GetZ441Value();
         }
 
         #region Amir
@@ -4123,31 +4950,40 @@ namespace SolverSdkTest
         } //N/A
         public double B537 { get { return B514 == GeneralClassification.None ? Double.NaN : B531 / Math.Pow(((E33 - E20) / E20), 0.5); } } //N/A
         public double C537 { get { return C514 == GeneralClassification.None ? Double.NaN : C531 / Math.Pow(((E33 - E20) / E20), 0.5); } } //N/A
+        private double? _j441;
         public double J441
         {
             get
             {
-                //Debug.WriteLine("J441");
-                //return J240 + J241 + J242 + J243 + J244 + J245 + J246 + J247 + J248 + J249 + J250 + J251 + J252 + J253 + J254 + J255 + J256 + J257 + J258 + J259 + J260 + J261 + J262 + J263 + J264 + J265 + J266 + J267 + J268 + J269 + J270 + J271 + J272 + J273 + J274 + J275 + J276 + J277 + J278 + J279 + J280 + J281 + J282 + J283 + J284 + J285 + J286 + J287 + J288 + J289 + J290 + J291 + J292 + J293 + J294 + J295 + J296 + J297 + J298 + J299 + J300 + J301 + J302 + J303 + J304 + J305 + J306 + J307 + J308 + J309 + J310 + J311 + J312 + J313 + J314 + J315 + J316 + J317 + J318 + J319 + J320 + J321 + J322 + J323 + J324 + J325 + J326 + J327 + J328 + J329 + J330 + J331 + J332 + J333 + J334 + J335 + J336 + J337 + J338 + J339 + J340 + J341 + J342 + J343 + J344 + J345 + J346 + J347 + J348 + J349 + J350 + J351 + J352 + J353 + J354 + J355 + J356 + J357 + J358 + J359 + J360 + J361 + J362 + J363 + J364 + J365 + J366 + J367 + J368 + J369 + J370 + J371 + J372 + J373 + J374 + J375 + J376 + J377 + J378 + J379 + J380 + J381 + J382 + J383 + J384 + J385 + J386 + J387 + J388 + J389 + J390 + J391 + J392 + J393 + J394 + J395 + J396 + J397 + J398 + J399 + J400 + J401 + J402 + J403 + J404 + J405 + J406 + J407 + J408 + J409 + J410 + J411 + J412 + J413 + J414 + J415 + J416 + J417 + J418 + J419 + J420 + J421 + J422 + J423 + J424 + J425 + J426 + J427 + J428 + J429 + J430 + J431 + J432 + J433 + J434 + J435 + J436 + J437 + J438 + J439 + J440;
-                return Double.NaN;
+                _j441 = _j441 ?? GetJ441Value();
+                return _j441.Value;
             }
         }
+        private double? _m441;
         public double M441
         {
             get
             {
-                //Debug.WriteLine("M441");
-                //return M240 + M241 + M242 + M243 + M244 + M245 + M246 + M247 + M248 + M249 + M250 + M251 + M252 + M253 + M254 + M255 + M256 + M257 + M258 + M259 + M260 + M261 + M262 + M263 + M264 + M265 + M266 + M267 + M268 + M269 + M270 + M271 + M272 + M273 + M274 + M275 + M276 + M277 + M278 + M279 + M280 + M281 + M282 + M283 + M284 + M285 + M286 + M287 + M288 + M289 + M290 + M291 + M292 + M293 + M294 + M295 + M296 + M297 + M298 + M299 + M300 + M301 + M302 + M303 + M304 + M305 + M306 + M307 + M308 + M309 + M310 + M311 + M312 + M313 + M314 + M315 + M316 + M317 + M318 + M319 + M320 + M321 + M322 + M323 + M324 + M325 + M326 + M327 + M328 + M329 + M330 + M331 + M332 + M333 + M334 + M335 + M336 + M337 + M338 + M339 + M340 + M341 + M342 + M343 + M344 + M345 + M346 + M347 + M348 + M349 + M350 + M351 + M352 + M353 + M354 + M355 + M356 + M357 + M358 + M359 + M360 + M361 + M362 + M363 + M364 + M365 + M366 + M367 + M368 + M369 + M370 + M371 + M372 + M373 + M374 + M375 + M376 + M377 + M378 + M379 + M380 + M381 + M382 + M383 + M384 + M385 + M386 + M387 + M388 + M389 + M390 + M391 + M392 + M393 + M394 + M395 + M396 + M397 + M398 + M399 + M400 + M401 + M402 + M403 + M404 + M405 + M406 + M407 + M408 + M409 + M410 + M411 + M412 + M413 + M414 + M415 + M416 + M417 + M418 + M419 + M420 + M421 + M422 + M423 + M424 + M425 + M426 + M427 + M428 + M429 + M430 + M431 + M432 + M433 + M434 + M435 + M436 + M437 + M438 + M439 + M440;
-                return Double.NaN;
+                _m441 = _m441 ?? GetM441Value();
+                return _m441.Value;
             }
         }
+        private double? _q441;
+        public double Q441
+        {
+            get
+            {
+                _q441 = _q441 ?? GetQ441Value();
+                return _q441.Value;
+            }
+        }
+        private double? _t441;
         public double T441
         {
             get
             {
-                //Debug.WriteLine("T441");
-                //return T240 + T241 + T242 + T243 + T244 + T245 + T246 + T247 + T248 + T249 + T250 + T251 + T252 + T253 + T254 + T255 + T256 + T257 + T258 + T259 + T260 + T261 + T262 + T263 + T264 + T265 + T266 + T267 + T268 + T269 + T270 + T271 + T272 + T273 + T274 + T275 + T276 + T277 + T278 + T279 + T280 + T281 + T282 + T283 + T284 + T285 + T286 + T287 + T288 + T289 + T290 + T291 + T292 + T293 + T294 + T295 + T296 + T297 + T298 + T299 + T300 + T301 + T302 + T303 + T304 + T305 + T306 + T307 + T308 + T309 + T310 + T311 + T312 + T313 + T314 + T315 + T316 + T317 + T318 + T319 + T320 + T321 + T322 + T323 + T324 + T325 + T326 + T327 + T328 + T329 + T330 + T331 + T332 + T333 + T334 + T335 + T336 + T337 + T338 + T339 + T340 + T341 + T342 + T343 + T344 + T345 + T346 + T347 + T348 + T349 + T350 + T351 + T352 + T353 + T354 + T355 + T356 + T357 + T358 + T359 + T360 + T361 + T362 + T363 + T364 + T365 + T366 + T367 + T368 + T369 + T370 + T371 + T372 + T373 + T374 + T375 + T376 + T377 + T378 + T379 + T380 + T381 + T382 + T383 + T384 + T385 + T386 + T387 + T388 + T389 + T390 + T391 + T392 + T393 + T394 + T395 + T396 + T397 + T398 + T399 + T400 + T401 + T402 + T403 + T404 + T405 + T406 + T407 + T408 + T409 + T410 + T411 + T412 + T413 + T414 + T415 + T416 + T417 + T418 + T419 + T420 + T421 + T422 + T423 + T424 + T425 + T426 + T427 + T428 + T429 + T430 + T431 + T432 + T433 + T434 + T435 + T436 + T437 + T438 + T439 + T440;
-                return Double.NaN;
+                _t441 = _t441 ?? GetT441Value();
+                return _t441.Value;
             }
         }
         public double L441 { get { return (J441 - M441) / J441; } }
@@ -4198,5 +5034,146 @@ namespace SolverSdkTest
         public double B206 { get { return (E39 / E25) * Math.Pow((E20 / E33), 0.5); } }
 
         #endregion
+
+
+        private double? _q447 { get; set; }
+        private double? _c536 { get; set; }
+        private double? _c531 { get; set; }
+
+        private double? _x235 { get; set; }
+        private double? _x237 { get; set; }
+        private double? _x236 { get; set; }
+        private double? _x446 { get; set; }
+        private double? _x447 { get; set; }
+
+        public double Q447
+        {
+            get
+            {
+                return B539;
+            }
+        }
+        public double C536
+        {
+            get
+            {
+                return (C514 == GeneralClassification.Cyclone ? C531 / G155 : Double.NaN);
+            }
+        }
+        public double X235
+        {
+            get
+            {
+                return X233 * X234;
+            }
+        }
+        public double B539
+        {
+            get
+            {
+                return (B514 == GeneralClassification.None ? Double.NaN : (B538 <= 1.03 ? 0 : Math.Min(1 / (0.933708 + 2477.923 * Math.Pow(B538, -35.9901)), 1)));
+            }
+        }
+        public double X233
+        {
+            get
+            {
+                return X232 * R233;
+            }
+        }
+        public double X234
+        {
+            get
+            {
+                return B219;
+            }
+        }
+        public double X232
+        {
+            get
+            {
+                return ((X446 <= 1 || Double.IsNaN(X446)) ? 1 : W232);
+            }
+        }
+        public double X446
+        {
+            get
+            {
+                return C538;
+            }
+        }
+        public double W232 { get; set; }
+        public double C538
+        {
+            get
+            {
+                return (C514 == GeneralClassification.None ? Double.NaN : C537 / C535);
+            }
+        }
+        public double C535
+        {
+            get
+            {
+                return (C514 == GeneralClassification.None ? Double.NaN : C525 * C534);
+            }
+        }
+        public double C534
+        {
+            get
+            {
+                return (C514 == GeneralClassification.None ? Double.NaN : Math.Min(1, (C514 == GeneralClassification.Mesh ? 1 - M131 * (C533 - J131) : (C514 == GeneralClassification.Vane ? 1 - L143 * (C533 - I143) : (C514 == GeneralClassification.Cyclone ? 1 - N155 * (C533 - K155) : Double.NaN)))));
+            }
+        }
+        public double C533
+        {
+            get
+            {
+                return (C514 == GeneralClassification.None ? Double.NaN : C532 * E9 / 1440 / C529);
+            }
+        }
+        public double C532
+        {
+            get
+            {
+                return (C514 == GeneralClassification.None ? Double.NaN : T441);
+            }
+        }
+        private double? _w441 { get; set; }
+        public double W441
+        {
+            get
+            {
+                _w441 = _w441 ?? GetW441Value();
+                return _w441.Value;
+            }
+        }
+        public double X237
+        {
+            get
+            {
+                return B222;
+            }
+        }
+        public double X236
+        {
+            get
+            {
+                return (X235 - X233) / X233;
+            }
+        }
+        public double X447
+        {
+            get
+            {
+                return C539;
+            }
+        }
+        public double C539
+        {
+            get
+            {
+                return (C514 == GeneralClassification.None ? Double.NaN : Math.Min(1 / (0.933708 + 2477.923 * Math.Pow(C538, -35.9901)), 1));
+            }
+        }
     }
 }

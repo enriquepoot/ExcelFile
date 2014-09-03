@@ -34,10 +34,15 @@ namespace SolverSdkTest
                 var val = sepsize.H21;
                 var h24 = sepsize.H24;
                 var B533 = sepsize.B533;
+                var j441 = sepsize.J441;
+                var m441 = sepsize.M441;
+                var q441 = sepsize.Q441;
+                var t441 = sepsize.T441;
+                var w441 = sepsize.W441;
+                var z441 = sepsize.Z441;
                 var s = sepsize.J808;
 
                 var r = 9;
-
             }
             catch (Exception ex)
             {
