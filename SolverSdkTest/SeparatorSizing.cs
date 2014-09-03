@@ -988,11 +988,13 @@ namespace SolverSdkTest
             }
         }
         public BooleanResponse B113 { get; set; }
+        private double? _b488;
         public double B488
         {
             get
             {
-                return B483 * (1 / 3.1416 * Math.Acos(1 - 2 * B878) - 2 / 3.1416 * (1 - 2 * B878) * Math.Pow((B878 - Math.Pow(B878, 2)), 0.5));
+                _b488 = _b488 ?? (B483 * (1 / 3.1416 * Math.Acos(1 - 2 * B878) - 2 / 3.1416 * (1 - 2 * B878) * Math.Pow((B878 - Math.Pow(B878, 2)), 0.5)));
+                return _b488.Value;
             }
         }
         public BooleanResponse B114 { get; set; }
@@ -1551,11 +1553,13 @@ namespace SolverSdkTest
                 return G97 + 1;
             }
         }
+        private double? _b483;
         public double B483
         {
             get
             {
-                return 0.7854 * Math.Pow(H7, 2);
+                _b483 = _b483 ?? (0.7854 * Math.Pow(H7, 2));
+                return _b483.Value;
             }
         }
         public double B878
@@ -1800,11 +1804,13 @@ namespace SolverSdkTest
             }
         }
         public double B16 { get; set; }
+        private double? _b474;
         public double B474
         {
             get
             {
-                return (B471 == BooleanResponse.N ? B470 : (B470 - 1) * (1 - C113) + 1);
+                _b474 = _b474 ?? ((B471 == BooleanResponse.N ? B470 : (B470 - 1) * (1 - C113) + 1));
+                return _b474.Value;
             }
         }
         public double C114 { get; set; }
@@ -2021,11 +2027,21 @@ namespace SolverSdkTest
                 return Math.Exp(0.715 - 1.128 * E13 + 0.42 * Math.Pow(E13, 2));
             }
         }
+        private double? _b470;
         public double B470
         {
             get
             {
-                return Math.Max(1,(A108==1?(3.011-0.2136*B469)/(1+0.1541*B469-0.01749*Math.Pow(B469,2)):(A108==2?(2.002-0.02044*B469)/(1+0.14936*B469-0.007879*Math.Pow(B469,2)):(A108==3?(1.6002+0.05315*B469)/(1+0.15228*B469-0.0045517*Math.Pow(B469,2)):(A108==4?(1.3009+0.18943*B469)/(1+0.22544*B469-0.0009816*Math.Pow(B469,2)):(1.4501+0.094073*B469)/(1+0.16319*B469-0.0029191*Math.Pow(B469,2)))))));
+                _b470 = _b470 ?? (Math.Max(1,(A108==1
+                    ?(3.011-0.2136*B469)/(1+0.1541*B469-0.01749*Math.Pow(B469,2))
+                    :(A108==2
+                    ?(2.002-0.02044*B469)/(1+0.14936*B469-0.007879*Math.Pow(B469,2))
+                    :(A108==3
+                    ?(1.6002+0.05315*B469)/(1+0.15228*B469-0.0045517*Math.Pow(B469,2))
+                    :(A108==4
+                    ?(1.3009+0.18943*B469)/(1+0.22544*B469-0.0009816*Math.Pow(B469,2))
+                    :(1.4501+0.094073*B469)/(1+0.16319*B469-0.0029191*Math.Pow(B469,2))))))));
+                return _b470.Value;
             }
         }
         public double C113 { get; set; }
@@ -2127,11 +2143,13 @@ namespace SolverSdkTest
                 return 690 - 35 * B20;
             }
         }
+        private double? _b469;
         public double B469
         {
             get
             {
-                return (B3 == Position.Vertical ? H8 / H7 : H8 / B468);
+                _b469 = _b469 ?? ((B3 == Position.Vertical ? H8 / H7 : H8 / B468));
+                return _b469.Value;
             }
         }
 
@@ -2213,11 +2231,13 @@ namespace SolverSdkTest
                 return 158 + 330 * B20;
             }
         }
+        private double? _b468;
         public double B468
         {
             get
             {
-                return Math.Pow(((B483 - B488) / 0.7854), 0.5);
+                _b468 = _b468 ?? (Math.Pow(((B483 - B488) / 0.7854), 0.5));
+                return _b468.Value;
             }
         }
 
@@ -2798,7 +2818,8 @@ namespace SolverSdkTest
         {
             get
             {
-                return B474 * B463;
+                _b475 = _b475 ?? (B474 * B463);
+                return _b475.Value;
             }
         }
         public double B571
@@ -4933,13 +4954,14 @@ namespace SolverSdkTest
         public double B481 { 
             get  //Replaced 476 TO 480 Due missing text in excel.
             { 
-                return B3 == Position.Vertical ? 
+                _b481 = _b481 ?? (B3 == Position.Vertical ? 
                     (B480 == SettlingLaw.Stokes ? 304800 * Math.Pow((B475 * 18 * E25 / (1488 * 32.2 * (E33 - E20))), 0.5) 
                     : (B480 == SettlingLaw.Intermediate ? 304800 * Math.Pow((B475 * Math.Pow(E20, 0.29) * Math.Pow(E25, 0.43) / (3.54 * Math.Pow(32.2, 0.71) * Math.Pow((E33 - E20), 0.71))), (1 / 1.14))
                     : 304800 * (Math.Pow((B475 / 1.74), 2)) * E20 / (32.2 * (E33 - E20)))) 
                     : (B480 == SettlingLaw.Stokes ? 304800 * Math.Pow((B478 * 18 * E25 / (1488 * 32.2 * (E33 - E20))), 0.5) 
                     : (B480 == SettlingLaw.Intermediate ? 304800 * Math.Pow((B478 * Math.Pow(E20, 0.29) * Math.Pow(E25, 0.43) / (3.54 * Math.Pow(32.2, 0.71) * Math.Pow((E33 - E20), 0.71))), (1 / 1.14))
-                    : 304800 * (Math.Pow((B478 / 1.74), 2)) * E20 / (32.2 * (E33 - E20)))); 
+                    : 304800 * (Math.Pow((B478 / 1.74), 2)) * E20 / (32.2 * (E33 - E20)))));
+                return _b481.Value;
             } 
         }
         public double B533 { 
@@ -4999,7 +5021,15 @@ namespace SolverSdkTest
         public double B213 { get { return B212 * 86400 / 5.615 / B13; } }
         public double B453 { get { return B186; } }
         public double B478 { get { return B482 / B477; } }
-        public SettlingLaw B480 { get { return B479 < B891 ? SettlingLaw.Stokes : (B479 < B892 ? SettlingLaw.Intermediate: (B479 < B893 ? SettlingLaw.Newtons : SettlingLaw.OutOfRange)); } }
+        private SettlingLaw? _b480;
+        public SettlingLaw B480
+        {
+            get
+            {
+                _b480 = _b480 ?? (B479 < B891 ? SettlingLaw.Stokes : (B479 < B892 ? SettlingLaw.Intermediate : (B479 < B893 ? SettlingLaw.Newtons : SettlingLaw.OutOfRange)));
+                return _b480.Value;
+            }
+        }
         public double B531 { get { return B530; } }
         public double B532 { get { return B514 == GeneralClassification.None ? Double.NaN : M441; } } //N/A
         public double C531 { get { return C530; } }
@@ -5010,12 +5040,14 @@ namespace SolverSdkTest
         public double B208 { get { return 0.25 * (E39 / 1488) * 3.1416 * B184 / 12 * B207; } }
         public double B212 { get { return B211 * E32; } }
         public double B477 { get { return H8 / B475; } }
+        private double? _b479;
         public double B479 { 
             get 
             { 
-                return B3 == Position.Vertical ? 
+                _b479 = _b479 ?? (B3 == Position.Vertical ? 
                     304800 * Math.Pow((B475 * (Math.Pow(E20, 0.29)) * (Math.Pow(E25, 0.43)) / (3.54 * (Math.Pow(32.2, 0.71)) * Math.Pow((E33 - E20), 0.71))), (1 / 1.14))
-                    : 304800 * Math.Pow((B478 * (Math.Pow(E20, 0.29)) * (Math.Pow(E25, 0.43)) / (3.54 * (Math.Pow(32.2, 0.71)) * Math.Pow((E33 - E20), 0.71))), (1 / 1.14)); 
+                    : 304800 * Math.Pow((B478 * (Math.Pow(E20, 0.29)) * (Math.Pow(E25, 0.43)) / (3.54 * (Math.Pow(32.2, 0.71)) * Math.Pow((E33 - E20), 0.71))), (1 / 1.14)));
+                return _b479.Value; 
             } 
         }
         public double B482 { get { return H7 - B877; } }

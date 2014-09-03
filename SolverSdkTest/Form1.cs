@@ -23,11 +23,9 @@ namespace SolverSdkTest
         {
             try
             {
-                //var gen = new Cellenator();
-                //gen.GenJCells();
-
                 var sepsize = new SeparatorSizing();
 
+                sepsize.B3 = SeparatorSizing.Position.Vertical;
                 sepsize.H7 = 6.11927343917312;
                 sepsize.H8 = 2.83267005098296;
 
