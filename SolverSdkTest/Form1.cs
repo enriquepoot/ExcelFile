@@ -25,20 +25,21 @@ namespace SolverSdkTest
             {
                 var sepsize = new SeparatorSizing();
 
-                sepsize.B3 = SeparatorSizing.Position.Vertical;
-                sepsize.H7 = 6.11927343917312;
-                sepsize.H8 = 2.83267005098296;
+                sepsize.H7 = 9;
+                sepsize.H8 = 9;
 
-                var val = sepsize.H21;
-                var h24 = sepsize.H24;
-                var B533 = sepsize.B533;
-                var j441 = sepsize.J441;
-                var m441 = sepsize.M441;
-                var q441 = sepsize.Q441;
-                var t441 = sepsize.T441;
-                var w441 = sepsize.W441;
-                var z441 = sepsize.Z441;
-                var s = sepsize.J808;
+                Minimize(sepsize);
+
+                //var val = sepsize.H21;
+                //var h24 = sepsize.H24;
+                //var B533 = sepsize.B533;
+                //var j441 = sepsize.J441;
+                //var m441 = sepsize.M441;
+                //var q441 = sepsize.Q441;
+                //var t441 = sepsize.T441;
+                //var w441 = sepsize.W441;
+                //var z441 = sepsize.Z441;
+                //var s = sepsize.J808;
 
                 var r = 9;
             }
@@ -144,43 +145,66 @@ namespace SolverSdkTest
             return Engine_Action.Continue;
         }
 
-        public double H7_ubCons { get; set; }
-        public double H7_lbCons { get; set; }
-        public double H8_ubCons { get; set; }
-        public double H8_lbCons { get; set; }
-        public void Minimize()
+        public void Minimize(SeparatorSizing original)
         {
-            H7_lbCons = 2;
-            H8_lbCons = 1.5;
 
-            H7_ubCons = 20;
-            H8_ubCons = 80;
+            double[] ub_cons = { Constants.PINF, Constants.PINF, Constants.PINF, Constants.PINF, 1.5, Constants.PINF, Constants.PINF, 0, 0, Constants.PINF, Constants.PINF,
+                               0, 0, 0, Constants.PINF, 0, Constants.PINF, 0, 0, 0, Constants.PINF};
+            double[] lb_cons = { original.B48, original.B49, original.B50, original.B47, 0, original.B49, original.B50, Constants.MINF, Constants.MINF, 0, 0,
+                               Constants.MINF, Constants.MINF, Constants.MINF, 0, Constants.MINF, 0, Constants.MINF, Constants.MINF, Constants.MINF, 0};
 
-            double[] ub_cons = { H7_ubCons, H8_ubCons };
-            double[] lb_cons = { H7_lbCons, H8_lbCons };
-
-            double[] ub = { H7, H8 };
+            double[] ub = { 20, 80 };
+            double[] lb = { 2, 1.5 };
             var count = 0;
-            using (Problem prob = new Problem(Solver_Type.Minimize, 2, 2))
+            using (Problem prob = new Problem(Solver_Type.Minimize, 2, 21))
             {
                 prob.FcnConstraint.UpperBound.Array = ub_cons;
                 prob.FcnConstraint.LowerBound.Array = ub_cons;
 
-                prob.VarDecision.NonNegative();
+                //prob.VarDecision.NonNegative();
                 prob.VarDecision.UpperBound.Array = ub;
+                prob.VarDecision.LowerBound.Array = lb;
 
                 prob.ProblemType = Problem_Type.OptNSP;
                 prob.Engine = prob.Engines[Engine.EVOName];
 
                 prob.Evaluators[Eval_Type.Function].OnEvaluate += (e) =>
                 {
+                    var h7 = e.Problem.VarDecision.Value[0];
+                    var h8 = e.Problem.VarDecision.Value[1];
 
-                    e.Problem.FcnConstraint.Value[0] = e.Problem.VarDecision.Value[0];
-                    e.Problem.FcnConstraint.Value[1] = e.Problem.VarDecision.Value[1];
+                    var sepSize = new SeparatorSizing();
+                    sepSize.H7 = h7;
+                    sepSize.H8 = h8;
 
-                    e.Problem.FcnObjective.Value[e.Problem.ObjectiveIndex] = e.Problem.VarDecision.Value[0] * 2 / 4 + e.Problem.VarDecision.Value[0] * 98;
+                    e.Problem.FcnConstraint.Value[0] = sepSize.K73;
+                    e.Problem.FcnConstraint.Value[1] = sepSize.I74;
+                    e.Problem.FcnConstraint.Value[2] = sepSize.K72;
+                    e.Problem.FcnConstraint.Value[3] = sepSize.I73;
+                    e.Problem.FcnConstraint.Value[4] = sepSize.H9;
+                    e.Problem.FcnConstraint.Value[5] = sepSize.I72;
+                    e.Problem.FcnConstraint.Value[6] = sepSize.K74;
+                    e.Problem.FcnConstraint.Value[7] = sepSize.H31;
+                    e.Problem.FcnConstraint.Value[8] = sepSize.H42;
+                    e.Problem.FcnConstraint.Value[9] = sepSize.H43;
+                    e.Problem.FcnConstraint.Value[10] = sepSize.H44;
+                    e.Problem.FcnConstraint.Value[11] = sepSize.H39;
+                    e.Problem.FcnConstraint.Value[12] = sepSize.H38;
+                    e.Problem.FcnConstraint.Value[13] = sepSize.H37;
+                    e.Problem.FcnConstraint.Value[14] = sepSize.H35;
+                    e.Problem.FcnConstraint.Value[15] = sepSize.H34;
+                    e.Problem.FcnConstraint.Value[16] = sepSize.H32;
+                    e.Problem.FcnConstraint.Value[17] = sepSize.H33;
+                    e.Problem.FcnConstraint.Value[18] = sepSize.H29;
+                    e.Problem.FcnConstraint.Value[19] = sepSize.H28;
+                    e.Problem.FcnConstraint.Value[20] = sepSize.H30;
+
+                    e.Problem.FcnObjective.Value[e.Problem.ObjectiveIndex] = sepSize.H21;
                     Console.WriteLine("Eval = " + e.Problem.Engine.Stat.FunctionEvals);
                     Console.WriteLine("Cont = " + count++);
+                    Console.WriteLine("H7 = " + sepSize.H7);
+                    Console.WriteLine("H8 = " + sepSize.H8);
+                    Console.WriteLine("H21 = " + sepSize.H21);
                     return Engine_Action.Continue;
                 };
 
